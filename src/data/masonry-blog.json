@@ -1,0 +1,218 @@
+[
+    {
+        "id": "1",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/shop-left-sidebar"
+        }],
+        "mainImg": "/assets/images/blog/img-4.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "2",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/shop-left-sidebar"
+        }],
+        "mainImg": "/assets/images/blog/img-5.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "3",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/single-slider-images"
+        }],
+        "mainImg": "/assets/images/blog/img-6.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "4",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/shop-left-sidebar"
+        }],
+        "mainImg": "/assets/images/blog/img-7.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "4",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/single-slider-images"
+        }],
+        "mainImg": "/assets/images/blog/img-8.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "9",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/single-slider-images"
+        }],
+        "mainImg": "/assets/images/blog/img-9.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "10",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/shop-left-sidebar"
+        }],
+        "mainImg": "/assets/images/blog/img-10.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "11",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/shop-left-sidebar"
+        }],
+        "mainImg": "/assets/images/blog/img-11.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "12",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/shop-left-sidebar"
+        }],
+        "mainImg": "/assets/images/blog/img-12.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "13",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/shop-left-sidebar"
+        }],
+        "mainImg": "/assets/images/blog/img-13.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "14",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/shop-left-sidebar"
+        }],
+        "mainImg": "/assets/images/blog/img-14.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "mini-content": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    },
+    {
+        "id": "15",
+        "date": "27 Nov 2020",
+        "categories": [{
+            "id": 1,
+            "name": "Fashion",
+            "link": "/shop-left-sidebar"
+        },
+        {
+            "id": 2,
+            "name": "Trend",
+            "link": "/shop-left-sidebar"
+        }],
+        "mainImg": "/assets/images/blog/img-15.jpg",
+        "link": "/single-slider-images",
+        "title": "The next level of Fashion",
+        "miniContent": "Housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright"
+    }
+]

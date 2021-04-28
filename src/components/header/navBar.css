@@ -1,0 +1,19 @@
+a.current-menu-item  {
+    text-decoration: none;
+    color: #c2572b !important;
+}
+
+.mobile-only{
+    display: none;
+}
+
+.logo-middle{
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+@media (max-width: 991px) {
+    .mobile-only{
+        display:  block;
+    }
+}

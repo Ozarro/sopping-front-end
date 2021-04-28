@@ -1,0 +1,45 @@
+.products .slick-arrow{
+    width: 50px;
+    height: 55px;
+    line-height: 55px;
+    background: #fff;
+    padding: 0;
+    color: #000;
+    border-radius: 0;
+    border: 1px solid #d6d6d6;
+    margin: 0;
+}
+
+.products .slick-next{
+    top: -51px;
+    right: 0;
+}
+
+.products .slick-prev {
+    top: -51px;
+    left: inherit;
+    right: 49px;
+}
+
+.products .slick-arrow:hover{
+    background: #000;
+}
+
+.products .slick-arrow:hover::before{
+    color: #fff;
+}
+
+.products .slick-next:before {
+    top: 8px;
+    right: 18px;
+}
+
+.products .slick-prev:before {
+    top: 8px;
+    left: 18px;
+}
+
+.single-product-info p{
+    line-height: 1.8em;
+    font-size: 18px;
+}

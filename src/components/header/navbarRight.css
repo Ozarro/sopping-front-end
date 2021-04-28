@@ -1,0 +1,26 @@
+.header-style-1 .header-right .mini-cart-content-toggle, 
+.header-style-1 .header-right .header-search-content-toggle {
+    z-index: 99;
+}
+
+.header-style-1 .header-right .mini-cart-content {
+    -webkit-transition: inherit;
+    -moz-transition: inherit;
+    -o-transition: inherit;
+    -ms-transition: inherit;
+    transition: inherit;
+}
+
+.tool-tip {
+    font-size: 12px !important;
+    pointer-events: auto !important;
+}
+
+.tool-tip:hover{
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.header-style-1 .header-right {
+    top: 39px;
+}

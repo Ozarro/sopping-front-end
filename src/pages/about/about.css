@@ -1,0 +1,30 @@
+.grid:focus, .grid:active{
+    outline: 0;
+    border: 0;
+}
+
+.testimonial-grids .slick-dots {
+    text-align: left;
+    margin: -15px 0px;
+}
+
+.testimonial-grids .slick-arrow{
+    display: none!important;
+}
+
+.testimonial-grids .slick-dots li button:before {
+    color: #e6e6e6;
+}
+
+.testimonial-grids .slick-dots li.slick-active button:before,
+.testimonial-grids .slick-dots li button:before{
+    font-size: 12px;
+}
+
+.testimonial-grids .slick-dots li.slick-active button:before {
+    color: white;
+}
+
+.testimonial-grids .slick-dots li {
+    margin: 0 0px;
+}

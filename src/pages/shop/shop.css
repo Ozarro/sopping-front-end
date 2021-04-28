@@ -1,0 +1,74 @@
+*:focus, *:active{
+    outline: 0!important;
+}
+
+.quick-view-single-product .product-option .product-row > div + div {
+    margin-left: 0px;
+}
+
+.slick-initialized .slick-slide:active, 
+.slick-initialized .slick-slide:focus, 
+.slick-slider:active, 
+.slick-slider:focus{
+    outline: 0;
+}
+
+.shop-single-section.shop-single-vertical-thumb .slick-dots {
+    bottom: -120px;
+}
+
+.shop-single-section.shop-single-vertical-thumb .vertical-thumbnail .slick-list{
+    width: 75%;
+    margin-left: 25%;
+}
+
+.shop-single-section.shop-single-vertical-thumb .slick-dots.slick-thumb.slider-nav{
+    display: block;
+    width: 25%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    max-height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.shop-single-section.shop-single-vertical-thumb .slick-dots li {
+    width: 100px;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.shop-single-section.shop-single-vertical-thumb .shop-single-slider .slider-nav {
+    margin-top: 0;
+}
+
+.touchspin-wrap {
+    position: relative;
+}
+
+.touchspin-wrap #slider-thumbnail-touchspin-up,
+.touchspin-wrap #slider-thumbnail-touchspin-down{
+    right: -2px;
+    position: absolute;
+    border-radius: 0;
+    padding: 6px 4px 6px 6px;
+}
+
+.touchspin-wrap #slider-thumbnail-touchspin-up{
+    top: 0px;
+}
+
+.touchspin-wrap #slider-thumbnail-touchspin-down{
+    top: 25px;
+}
+
+.touchspin-wrap #slider-thumbnail-touchspin-up:hover,
+.touchspin-wrap #slider-thumbnail-touchspin-down:hover{
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.touchspin-wrap #slider-thumbnail-touchspin-up:hover .glyphicon,
+.touchspin-wrap #slider-thumbnail-touchspin-down:hover .glyphicon{
+    color: #fff;
+}

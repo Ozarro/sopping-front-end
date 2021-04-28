@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "img": "/assets/images/slider/img-5.png",
+        "title": "sneaker",
+        "color": "#78909C"
+    },
+    {
+        "id": 2,
+        "img": "/assets/images/slider/img-6.png",
+        "title": "sneaker",
+        "color": "#68B0AB"
+    }
+]

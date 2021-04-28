@@ -1,0 +1,48 @@
+.product-quantity input{
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+}
+
+.quantity {
+    position: relative;
+}
+
+.quantity .btn-default{
+    position: absolute;
+    right: -18px;
+    width: 19px;
+    padding: 0;
+    border-radius: 0;
+    height: 18px;
+}
+
+.quantity .btn-default:focus,
+.quantity .btn-default:active{
+    outline: 0;
+    background-color: #fff;
+}
+
+.quantity .bootstrap-touchspin-down{
+    top: 16px;
+}
+
+.quantity .glyphicon-chevron-up:before {
+    font-size: 9px;
+}
+
+.quantity .glyphicon-chevron-down:before {
+    font-size: 9px;
+}
+
+.quantity .glyphicon {
+    top: -2px;
+    left: 2px;
+}

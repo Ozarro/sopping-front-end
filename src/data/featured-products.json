@@ -1,0 +1,17 @@
+[
+    {
+        "id" : 1,
+        "img": "/assets/images/feature-product/img-4.jpg",
+        "title": "Spring Collection"
+    },
+    {
+        "id" : 2,
+        "img": "/assets/images/feature-product/img-11.jpg",
+        "title": "Winter Collection"
+    },
+    {
+        "id" : 3,
+        "img": "/assets/images/feature-product/img-7.jpg",
+        "title": "Wool sweater"
+    }
+]

@@ -1,0 +1,59 @@
+[
+    {
+        "id": 1,
+        "mainImg": "/assets/images/blog/img-16.jpg",
+        "categories": [
+            {
+                "id": 1,
+                "name": "Fashion",
+                "link": "#"
+            },
+            {
+                "id": 2,
+                "name": "Trend",
+                "link": "#"
+            }
+        ],
+        "title": "Clothing Stores understands the human nature of presenting",
+        "link": "#",
+        "createdDate": "27 Nov 2020"
+    },
+    {
+        "id": 2,
+        "mainImg": "/assets/images/blog/img-17.jpg",
+        "categories": [
+            {
+                "id": 1,
+                "name": "Fashion",
+                "link": "#"
+            },
+            {
+                "id": 2,
+                "name": "Trend",
+                "link": "#"
+            }
+        ],
+        "title": "Appearance is the first impression you convey to others solutiuo",
+        "link": "#",
+        "createdDate": "28 Nov 2020"
+    },
+    {
+        "id": 3,
+        "mainImg": "/assets/images/blog/img-18.jpg",
+        "categories": [
+            {
+                "id": 1,
+                "name": "Fashion",
+                "link": "#"
+            },
+            {
+                "id": 2,
+                "name": "Trend",
+                "link": "#"
+            }
+        ],
+        "title": "Clothing Stores understands the human nature of presenting",
+        "link": "#",
+        "createdDate": "30 Nov 2020"
+    }
+]

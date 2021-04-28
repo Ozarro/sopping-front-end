@@ -1,0 +1,66 @@
+{
+  "id": "1",
+  "name": "Ladies Elegant T-shirt",
+  "images": [
+    {
+      "src": "assets/images/shop/img-1.jpg"
+    },
+    {
+      "src": "assets/images/shop/img-2.jpg"
+    },
+    {
+      "src": "assets/images/shop/img-3.jpg"
+    },
+    {
+      "src": "assets/images/shop/img-4.jpg"
+    },
+    {
+      "src": "assets/images/shop/img-5.jpg"
+    },
+    {
+      "src": "assets/images/shop/img-6.jpg"
+    }
+  ],
+  "price": "45.00",
+  "oldPrice": "55.00",
+  "symbol": "$",
+  "reviewCount": "(2 Customer review)",
+  "shortDescription": "Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections the bedding was hardly able to cover",
+  "sku": "41236-1",
+  "categories": [
+    {
+      "id": 1,
+      "name": "Clothing",
+      "link": "#"
+    },
+    {
+      "id": 1,
+      "name": "Tops",
+      "link": "#"
+    },
+    {
+      "id": 1,
+      "name": "Women",
+      "link": "#"
+    }
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "Button",
+      "link": "#"
+    },
+    {
+      "id": 1,
+      "name": "Red",
+      "link": "#"
+    },
+    {
+      "id": 1,
+      "name": "Tshirt",
+      "link": "#"
+    }
+  ],
+  "description": "Samsa was a travelling salesman and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright, raising a heavy fur muff that covered the whole of her lower arm towards the viewer. Gregor then turned to look out the window at the dull weather. waved about helplessly as he looked. \"What's happened to me?\" he thought. It wasn't a dream. His room, a proper human room although a little too small, lay peacefully between its four familiar wallstrated magazine and housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright, raising a heavy fur muff that covered the whole of her lower arm towards the viewer. Gregor then turned to look out the window at the dull weather"
+
+}

@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "name": "Jakets",
+        "icon": "flaticon-jacket-1",
+        "link": "/shop-right-sidebar"
+    },
+    {
+        "id": 2,
+        "name": "Coats",
+        "icon": "flaticon-jacket-2",
+        "link": "/shop-right-sidebar"
+    },
+    {
+        "id": 2,
+        "name": "Trousers",
+        "icon": "flaticon-pants",
+        "link": "/shop-right-sidebar"
+    },
+    {
+        "id": 3,
+        "name": "Tops",
+        "icon": "flaticon-dress",
+        "link": "/shop-right-sidebar"
+    },
+    {
+        "id": 4,
+        "name": "T-shirts",
+        "icon": "flaticon-polo-shirt",
+        "link": "/shop-right-sidebar"
+    },
+    {
+        "id": 5,
+        "name": "Skirts",
+        "icon": "flaticon-dress-1",
+        "link": "/shop-right-sidebar"
+    },
+    {
+        "id": 6,
+        "name": "Bridals",
+        "icon": "flaticon-bride-dress",
+        "link": "/shop-right-sidebar"
+    },
+    {
+        "id": 7,
+        "name": "Swetters",
+        "icon": "flaticon-coat",
+        "link": "/shop-right-sidebar"
+    }
+]
