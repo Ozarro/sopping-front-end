@@ -126,7 +126,7 @@ export default {
   order: {
     add : {
       async order(orderData) {
-        return ajaxResolver(axios.get(`/order/add-order`,orderData));
+        return ajaxResolver(axios.post(`/order/add-order`,orderData));
       },
     },
     get: {
@@ -139,12 +139,22 @@ export default {
   cart: {
     add : {
       async cartItem(itemData) {
-        return ajaxResolver(axios.get(`/order/add-cart-item`,itemData));
+        return ajaxResolver(axios.post(`/order/add-cart-item`,itemData));
       },
     },
     get: {
       async userCartItems(query) {
         return ajaxResolver(axios.get(`/order/get-user-cart-items`, { params: query }));
+      },
+    },
+    put: {
+      async updateCartItem(itemId, itemData) {
+        return ajaxResolver(axios.put(`/order/update-cart-item/${itemId}`, itemData));
+      },
+    },
+    delete: {
+      async deleteCartItem(itemId) {
+        return ajaxResolver(axios.delete(`/order/cart-item/${itemId}`));
       },
     },
   },

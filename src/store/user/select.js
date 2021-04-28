@@ -5,11 +5,6 @@ export const getUserId = createDraftSafeSelector(
   (user) => user.userData.userId
 );
 
-export const getImage = createDraftSafeSelector(
-    (state) => state.user,
-    (user) => user.userData.image
-);
-
 export const getAccountType = createDraftSafeSelector(
   (state) => state.user,
   (user) => user.userData.type
@@ -30,7 +25,3 @@ export const getProfileData = createDraftSafeSelector(
   (user) => user.profileData
 );
 
-export const getAllAdmins = createDraftSafeSelector(
-    (state) => state.user,
-    (user) => user.admins
-);

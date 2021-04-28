@@ -5,9 +5,8 @@ const initialState = {
   userData: {
     userId: "",
     name: "",
-    mobile: "",
+    email : "",
     userType: "",
-    image : ""
   },
   profileData: {
   },
@@ -15,8 +14,6 @@ const initialState = {
     access: "",
     refresh: "",
   },
-  bankData: {},
-  admins : []
 };
 
 /**
@@ -42,10 +39,6 @@ const userSlice = createSlice({
     updateProfileData(state, action) {
       state.profileData = action.payload;
     },
-
-    setAdmins(state,action){
-      state.admins = action.payload;
-    }
   },
 });
 
@@ -57,7 +50,6 @@ export const {
   setTokenData,
   setProfileData,
   updateProfileData,
-  setAdmins
 } = userSlice.actions;
 
 export default userSlice.reducer;

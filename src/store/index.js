@@ -7,7 +7,6 @@ import userReducer, {
   setTokenData,
   setUserData,
   updateProfileData,
-    setAdmins
 } from "./user";
 
 import productReducer , {
@@ -17,7 +16,8 @@ import productReducer , {
 
 import orderReducer, {
   setCoupons,
-    setOrders
+    setOrders,
+    setCartItems,setZoneArray,setZoneCities
 } from "./order";
 
 /**
@@ -53,7 +53,6 @@ export const actions = {
     setTokenData,
     setProfileData,
     updateProfileData,
-    setAdmins
   },
   product : {
     setCategories,
@@ -62,6 +61,9 @@ export const actions = {
   order : {
     setCoupons,
     setOrders,
+    setCartItems,
+    setZoneCities,
+    setZoneArray
   }
 };
 

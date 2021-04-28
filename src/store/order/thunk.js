@@ -4,44 +4,22 @@ import api, { registerAccessToken } from "./../../api";
 
 import {
   setCoupons,
-  setOrders
+  setOrders,
+    setCartItems,
+    setZoneArray,
+    setZoneCities
 } from "./index";
 
 export default class orderThunk {
-
   /**
-   * ------------------Add------------------------------
+   * Add Order
    */
-
-  /**
-   * Add coupon
-   */
-  static addCoupon(couponData) {
+  static addOrder( orderData) {
     return async (dispatch, getState) => {
       registerAccessToken(getState().user.tokens.access);
-      const [res, data] = await api.coupon.add.coupon(couponData);
+      const [res, data] = await api.order.add.order(orderData);
       if (res.status === 200) {
-        const [res1, data] = await api.coupon.get.allCoupons();
-        if (res1.status === 200) {
-          dispatch(setCoupons(data));
-        }
-      }
-      return res;
-    }
-  }
-
-  /**
-   * ------------------Update------------------------------
-   */
-  /**
-   * Update order
-   */
-  static updateOrder(orderId, orderData) {
-    return async (dispatch, getState) => {
-      registerAccessToken(getState().user.tokens.access);
-      const [res, data1] = await api.order.put.updateOrder(orderId, orderData);
-      if (res.status === 200) {
-        const [res1, data] = await api.order.get.allOrders();
+        const [res1, data] = await api.order.get.userOrders();
         if (res1.status === 200) {
           dispatch(setOrders(data));
         }
@@ -51,16 +29,20 @@ export default class orderThunk {
   }
 
   /**
+   * ------------------Update------------------------------
+   */
+
+  /**
    * Update coupon
    */
-  static updateCoupon(couponId, couponData) {
+  static updateCartItem(itemId, itemData) {
     return async (dispatch, getState) => {
       registerAccessToken(getState().user.tokens.access);
-      const [res, data] = await api.coupon.put.updateCoupon(couponId, couponData);
+      const [res, data] = await api.cart.put.updateCartItem(itemId, itemData);
       if (res.status === 200) {
-        const [res1, data] = await api.coupon.get.allCoupons();
+        const [res1, data] = await api.cart.get.userCartItems();
         if (res1.status === 200) {
-          dispatch(setCoupons(data));
+          dispatch(setCartItems(data));
         }
       }
       return res;
@@ -73,10 +55,24 @@ export default class orderThunk {
   /**
    * Get All Orders
    */
-  static getAllOrders(query) {
+  static getAllCartItems(query) {
     return async (dispatch, getState) => {
       registerAccessToken(getState().user.tokens.access);
-      const [res, data] = await api.order.get.allOrders(query);
+      const [res, data] = await api.cart.get.userCartItems(query);
+      if (res.status === 200) {
+        dispatch(setCartItems(data));
+      }
+      return res;
+    }
+  }
+
+  /**
+   * Get All Orders
+   */
+  static getAllUserOrders(query) {
+    return async (dispatch, getState) => {
+      registerAccessToken(getState().user.tokens.access);
+      const [res, data] = await api.order.get.userOrders(query);
       if (res.status === 200) {
         dispatch(setOrders(data));
       }
@@ -93,6 +89,54 @@ export default class orderThunk {
       const [res, data] = await api.coupon.get.allCoupons(query);
       if (res.status === 200) {
         dispatch(setCoupons(data));
+      }
+      return res;
+    }
+  }
+
+  /**
+   * get all zone cities
+   */
+  static getAllZoneCities(query) {
+    return async (dispatch, getState) => {
+      registerAccessToken(getState().user.tokens.access);
+      const [res, data] = await api.zone.get.zoneCities(query);
+      if (res.status === 200) {
+        dispatch(setZoneCities(data));
+      }
+      return res;
+    }
+  }
+
+  /**
+   * get all zone array
+   */
+  static getAllZoneArray(query) {
+    return async (dispatch, getState) => {
+      registerAccessToken(getState().user.tokens.access);
+      const [res, data] = await api.zone.get.zoneCityArray(query);
+      if (res.status === 200) {
+        dispatch(setZoneArray(data));
+      }
+      return res;
+    }
+  }
+
+  /**
+   * --------------------Delete----------------------------------------
+   */
+  /**
+   * Get All Orders
+   */
+  static removeCartItem(itemId) {
+    return async (dispatch, getState) => {
+      registerAccessToken(getState().user.tokens.access);
+      const [res] = await api.cart.delete.deleteCartItem(itemId);
+      if (res.status === 200) {
+        const [res1, data] = await api.cart.get.userCartItems();
+        if (res1.status === 200) {
+          dispatch(setCartItems(data));
+        }
       }
       return res;
     }

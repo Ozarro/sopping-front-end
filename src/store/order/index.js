@@ -4,6 +4,9 @@ import { /*createAsyncThunk,*/ createSlice } from "@reduxjs/toolkit";
 const initialState = {
   orders : [],
   coupons : [],
+  zoneCities : [],
+  zoneArray : [],
+  cartItems : [],
 };
 
 /**
@@ -22,6 +25,20 @@ const orderSlice = createSlice({
       state.coupons = action.payload;
     },
 
+    setZoneCities(state, action) {
+      state.zoneCities = action.payload;
+    },
+
+    setZoneArray(state, action) {
+      state.zoneArray = action.payload;
+    },
+
+    setCartItems(state, action) {
+      state.cartItems = action.payload;
+    },
+
+
+
   },
 });
 
@@ -30,7 +47,11 @@ const orderSlice = createSlice({
  */
 export const {
   setOrders,
-  setCoupons
+  setCoupons,
+  setCartItems,
+  setZoneArray,
+  setZoneCities
+
 } = orderSlice.actions;
 
 export default orderSlice.reducer;
