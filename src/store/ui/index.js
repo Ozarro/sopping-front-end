@@ -1,34 +1,29 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { /*createAsyncThunk,*/ createSlice } from "@reduxjs/toolkit";
+//import api from "../../api"
 
-/**
- * UI Slice
- */
-const uiSlice = createSlice({
-    name: "ui",
-    initialState: {
-        sidebarShow: "responsive",
-        loading: false
-    },
-    reducers: {
-        sidebarShowSet: (ui, action) => {
-            ui.sidebarShow = action.payload.sidebarShow;
-        },
-
-    },
-});
-
-
-export default uiSlice.reducer;
-
-//Action creators
-export const setSidebarShow = (data) => (dispatch, getState) => {
-    dispatch({
-        type: "ui/sidebarShowSet",
-        payload: {
-            ...data,
-        },
-    });
+const initialState = {
+  preloadShow : false,
 };
 
-//Selectors
-export const getSidebarShow = (state) => state.ui.sidebarShow;
+/**
+ * Product Slice
+ */
+const productSlice = createSlice({
+  name: "ui",
+  initialState,
+
+  reducers: {
+    setPreloadShow: (ui, action) => {
+        ui.preloadShow = action.payload;
+    },
+  },
+});
+
+/**
+ * Exports
+ */
+export const {
+    setPreloadShow
+} = productSlice.actions;
+
+export default productSlice.reducer;

@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect} from 'react';
 import {Link} from "react-router-dom";
-import BACK_END_URL from "../../api/index";
+import {BACK_END_URL} from "../../api/index";
 const FILE_URL = BACK_END_URL.DEFAULT_FILE_URL;
 
 /**
@@ -12,7 +12,6 @@ const FILE_URL = BACK_END_URL.DEFAULT_FILE_URL;
  * @constructor
  */
 function Products({HandelQuickViewData, products, ordering}) {
-
     return (
         <Fragment>
             <ul className={"products " + (ordering == 1 ? 'default-column' : ordering == 2 ? 'three-column' : ordering == 3 ? 'list-view' : '')}>
@@ -27,8 +26,8 @@ function Products({HandelQuickViewData, products, ordering}) {
                                         }
                                         %</div> : ''
                                 }
-                                <Link to="/single-slider-images">
-                                    <img loading="lazy" src={FILE_URL + item.image} alt=""/>
+                                <Link to={`/single-slider-images/${item.pCode}`} params = {{pCode : item.pCode}}>
+                                    <img loading="lazy" src={FILE_URL + item.image} alt="Product Image"/>
                                 </Link>
                                 <div className="shop-action-wrap">
                                     <ul className="shop-action">

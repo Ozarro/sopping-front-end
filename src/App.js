@@ -1,5 +1,6 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import {Switch, Route} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 import HttpsRedirect from 'react-https-redirect';
 
@@ -25,6 +26,8 @@ import BlogSingle from './pages/blog/Single';
 import SingleVerticalThumbnail from './pages/shop/SingleVerticalThumbnail';
 import ShopSliderImages from './pages/shop/ShopSliderImages';
 import ScrollToTop from "./ScrollToTop";
+import {getPreloadShow} from "./store/ui/select";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -35,10 +38,11 @@ function App() {
      * mobile nav state
      * loader state
      */
+
     const [showMiniCart, setShowMiniCart] = useState(false);
     const [showSideInfo, setShowSideInfo] = useState(false);
     const [showMobileNav, setShowMobileNav] = useState(false);
-    const [showPreloader, setShowPreloader] = useState(true);
+    const showPreloader = useSelector(getPreloadShow);
 
     /**
      * change mini cart state
@@ -63,15 +67,6 @@ function App() {
     const HandelMobileNavStatus = () => {
         setShowMobileNav(!showMobileNav);
     };
-
-    /**
-     *  Effect Hook for remove loader after 400 milliseconds
-     */
-    useEffect(() => {
-        setTimeout(() => {
-            setShowPreloader(false);
-        }, 400)
-    }, []);
 
     /**
      * set default states
@@ -184,11 +179,11 @@ function App() {
                             <BlogSingle options={options}/>
                         </Route>
 
-                        <Route exact path="/single-vertical-thumbnail">
+                        {/* <Route exact path="/single-vertical-thumbnail">
                             <SingleVerticalThumbnail options={options}/>
-                        </Route>
+                        </Route> */}
 
-                        <Route exact path="/single-slider-images">
+                        <Route exact path="/single-slider-images/:pCode">
                             <ShopSliderImages options={options}/>
                         </Route>
 
@@ -197,11 +192,21 @@ function App() {
                         </Route>
 
                     </Switch>
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={10000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        />
                 </div>
             </Fragment>
         </HttpsRedirect>
         
     );
 }
-
 export default App;

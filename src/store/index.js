@@ -1,6 +1,8 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
-import uiReducer from "./ui";
+import uiReducer , {
+  setPreloadShow
+}from "./ui";
 import userReducer, {
   setProfileData,
   setTokenData,
@@ -63,13 +65,16 @@ export const actions = {
     setCartItems,
     setZoneCities,
     setZoneArray
+  },
+  ui : {
+    setPreloadShow,
   }
 };
 
 export const thunks = {
   user: userThunk,
   product : productThunk,
-  order : orderThunk
+  order : orderThunk,
 
 };
 

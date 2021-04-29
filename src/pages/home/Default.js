@@ -53,13 +53,13 @@ function HomeDefault({ options }) {
 
     return (
         <Fragment>
-            {showQuickView
+            {/* {showQuickView
                 ? <QuickView
                     data={quickViewData}
                     onQuickViewCloseClick={HandelQuickViewClose}
                 />
                 : ''
-            }
+            } */}
 
             <Header options={options} />
 
@@ -73,7 +73,7 @@ function HomeDefault({ options }) {
 
             <CtaSection/>
 
-            <BestSeller onQuickViewClick={HandelQuickViewData}/>
+            {/* <BestSeller onQuickViewClick={HandelQuickViewData}/> */}
 
             {/* <Instagram/> */}
 

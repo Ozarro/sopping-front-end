@@ -29,6 +29,23 @@ export default class orderThunk {
   }
 
   /**
+   * Add Item Cart
+   */
+   static addCartItem( itemData) {
+    return async (dispatch, getState) => {
+      registerAccessToken(getState().user.tokens.access);
+      const [res, data] = await api.cart.add.cartItem(itemData);
+      if (res.status === 200) {
+        const [res1, data] = await api.cart.get.userCartItems();
+        if (res1.status === 200) {
+          dispatch(setCartItems(data));
+        }
+      }
+      return res;
+    }
+  }
+
+  /**
    * ------------------Update------------------------------
    */
 

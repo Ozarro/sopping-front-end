@@ -18,9 +18,9 @@ import Products from "../../components/shop/Products";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 
+import {getAllProducts , getAllCategories} from "../../store/product/select";
+import { thunks , actions } from "../../store/index";
 
-import {getAllProducts} from "../../store/product/select";
-import { thunks } from "../../store/index";
 
 import './shop.css';
 
@@ -42,23 +42,50 @@ function RightSidebar({ options }) {
      */
     const [showQuickView, setShowQuickView] = useState(false);
     const [quickViewData, setQuickViewData] = useState({});
+    const [category, setCategory] = useState({});
 
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
     const [ordering, setOrdering] = useState(1);
 
     const products = useSelector(getAllProducts);
+    const categories = useSelector(getAllCategories);
+
+    const [filterProducts, setFilterProducts] = useState([]);
+
+    const getFilterProducts = (category) => {
+        let filterProducts = [];
+        console.log("category", category);
+        if(Object.keys(category) != 0){
+            console.log("Inside filter", category);
+            const categoryId = category.categoryId;
+            filterProducts = products.filter(item => 
+                item.categoryId == categoryId
+            )
+            return filterProducts;
+        }else{
+            return products;
+        }
+    }
 
     useEffect(async () => {
-        setLoading(true);
-        const res = await dispatch(thunks.product.getAllProducts());
-        setLoading(false);
-        if (res && res.status !== 200) {
+        dispatch(actions.ui.setPreloadShow(true));
+        const res1 = await dispatch(thunks.product.getAllProducts());
+        const res2 = await dispatch(thunks.product.getAllCategory());
+        dispatch(actions.ui.setPreloadShow(false));
+        if (res1.status  != 200 || res2.status != 200) {
             setError(true);
-            toast.error(res.message);
+            toast.error(res1.message);
+            toast.error(res2.message);
         }
     }, []);
+
+
+    
+
+    useEffect(async () => {
+        setFilterProducts(getFilterProducts(category));
+    }, [category,products]);
 
     /**
      * Handle Ordering Status
@@ -86,16 +113,23 @@ function RightSidebar({ options }) {
         setQuickViewData({});
     };
 
+    /**
+     * Handel Change of the Category
+     */
+    const handleCategoryChange = (category) => {
+        setCategory(category);
+    }
+
     return (
         <Fragment>
 
-            {showQuickView
+            {/* {showQuickView
                 ? <QuickView
                     data={quickViewData}
                     onQuickViewCloseClick={HandelQuickViewClose}
                 />
                 : ''
-            }
+            } */}
 
             <Header options={options} />
 
@@ -110,20 +144,10 @@ function RightSidebar({ options }) {
                             <div className="shop-area clearfix">
                                 <div className="woocommerce-content-wrap">
                                     <div className="woocommerce-content-inner">
-                                        {/* <div className="woocommerce-toolbar-top">
-                                            <p className="woocommerce-result-count">Showing 1–12 of 70 results</p>
-                                            
-                                            <OrderingToolbar
-                                                HandleOrderingStatus={HandleOrderingStatus}
-                                                ordering={ordering}
-                                            />
-                                            
-                                            <Ordering/>
-                                        </div> */}
 
                                         <Products
                                             HandelQuickViewData={HandelQuickViewData}
-                                            products={products}
+                                            products={filterProducts}
                                             ordering={ordering}
                                         />
 
@@ -133,8 +157,11 @@ function RightSidebar({ options }) {
                                 <div className="shop-sidebar">
                                     {/* <SearchWidget title=""/> */}
                                     {/* <PriceFilterWidget/> */}
-                                    <ProductCategoriesWidget/>
-                                    <ColorFilterWidget/>
+                                    <ProductCategoriesWidget
+                                        categories={categories}
+                                        onCategoryChange={handleCategoryChange}
+                                    />
+                                    {/* <ColorFilterWidget/> */}
                                     {/* <TagFilterWidget/> */}
                                 </div>
                             </div>
@@ -145,7 +172,7 @@ function RightSidebar({ options }) {
             </section>
             {/* end shop-section */}
 
-            <Instagram/>
+            {/* <Instagram/> */}
             <Footer/>
 
         </Fragment>

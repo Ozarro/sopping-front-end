@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import Slider from "react-slick";
 
 import Footer from '../../components/global/Footer';
@@ -8,6 +8,10 @@ import Header from '../../components/header/Header';
 import ProductInfoTabs from '../../components/products/ProductInfoTabs';
 import QuickView from '../../components/products/QuickView';
 import RecentSingleProducts from '../../components/products/RecentSingleProducts';
+import {useParams} from "react-router";
+import {BACK_END_URL} from "../../api/index";
+const FILE_URL = BACK_END_URL.DEFAULT_FILE_URL;
+
 
 import './shop.css';
 
@@ -15,6 +19,11 @@ import './shop.css';
  * demo data
  */
 import data from '../../data/singleProductDemo.json';
+import {useDispatch, useSelector} from "react-redux";
+import {getAllCategories, getAllProducts} from "../../store/product/select";
+import {thunks, actions} from "../../store";
+import {toast} from "react-toastify";
+
 
 /**
  * single shop page with  Slider Images
@@ -23,6 +32,41 @@ import data from '../../data/singleProductDemo.json';
  * @constructor
  */
 function ShopSliderImages({options}) {
+    const dispatch = useDispatch();
+    const {pCode} = useParams();
+
+    const [error, setError] = useState(false);
+    const [product, setProduct] = useState({});
+    const [itemData, setItemData] = useState({})
+
+    const getProductByCode = (pCode , products) => {
+        let product ;
+        if(products){
+            
+            product = products.find((item) => {
+               return item.pCode == pCode;
+            })
+        }else{
+            toast.error("Product not found");
+            return;
+        }
+        return product;
+    }
+
+    const products = useSelector(getAllProducts);
+
+    useEffect(async () => {
+        dispatch(actions.ui.setPreloadShow(true));
+        const res1 = await dispatch(thunks.product.getAllProducts());
+        if (res1.status  != 200) {
+            setError(true);
+            toast.error(res1.message);
+        }
+        setProduct(getProductByCode(pCode, products));
+        dispatch(actions.ui.setPreloadShow(false));
+        toast.error("Product not found");
+       
+    },[]);
 
     /**
      * states
@@ -30,6 +74,24 @@ function ShopSliderImages({options}) {
     const [showQuickView, setShowQuickView] = useState(false);
     const [quickViewData, setQuickViewData] = useState({});
     const [productCount, setProductCount] = useState(1);
+
+    /**
+     * Handle Add to cart function
+     */
+    const handleAddToCart = (e) => {
+        e.preventDefault();
+        dispatch(actions.ui.setPreloadShow(true));
+        const itemData = {
+            pCode : product.pCode,
+            quantity : productCount,
+            price : product.price
+        }
+        const res = dispatch(thunks.order.addCartItem());
+        if (res.status  != 200) {
+            setError(true);
+            toast.error(res.message);
+        }
+    }
 
     /**
      * Handle Product Count
@@ -91,7 +153,7 @@ function ShopSliderImages({options}) {
 
             <Header options={options}/>
 
-            <PageTitle name="Shop single"/>
+            <PageTitle name="Shop Product"/>
 
             {/* start shop-single-section */}
             <section className="shop-single-section section-padding">
@@ -99,34 +161,22 @@ function ShopSliderImages({options}) {
                     <div className="row">
                         <div className="col col-md-6">
                             <div className="shop-single-slider slider-thumbnail">
-                                <Slider {...settings}>
                                     {
-                                        data.images.map((item, index) => (
-                                            <div key={index}>
-                                                <img src={process.env.PUBLIC_URL + item.src}/>
-                                            </div>
-                                        ))
+                                    <div >
+                                        <img src={ (product) ? FILE_URL+product.image : ""}/>
+                                    </div>
                                     }
-                                </Slider>
                                 <div className="slider-nav"></div>
                             </div>
                         </div>
                         <div className="col col-md-6">
                             <div className="product-details">
-                                <h2>{data.name}</h2>
+                                <h2>{(product) ? product.pName : ""}</h2>
                                 <div className="price">
-                                    <span className="current">{data.symbol}{data.price}</span>
-                                    <span className="old">{data.symbol}{data.oldPrice}</span>
+                                    <span className="current">Rs.  {(product) ? product.price : ""}</span>
                                 </div>
-                                <div className="rating">
-                                    <i className="fi flaticon-star"/>
-                                    <i className="fi flaticon-star"/>
-                                    <i className="fi flaticon-star"/>
-                                    <i className="fi flaticon-star"/>
-                                    <i className="fi flaticon-star-social-favorite-middle-full"/>
-                                    <span>{data.reviewCount}</span>
-                                </div>
-                                <p>{data.shortDescription}</p>
+
+                                <p>{(product) ? product.description : ""}</p>
                                 <div className="product-option">
                                     <form className="form">
                                         <div className="product-row">
@@ -153,59 +203,27 @@ function ShopSliderImages({options}) {
                                         </div>
                                     </form>
                                 </div>
-                                <div className="thb-product-meta-before">
-                                    <div className="add-to-wishlist">
-                                        <a href="#" className="add_to_wishlist">
-                                            <i className="pe-7s-like"/>
-                                            <span>Add To Wishlist</span>
-                                        </a>
-                                    </div>
-                                    <div className="product_meta">
-                                        <span className="sku_wrapper">SKU: <span
-                                            className="sku">{data.sku}</span></span>
-                                        <span className="posted_in">Categories:
-                                            {
-                                                data.categories.map((item, index) =>
-                                                    <a key={index}
-                                                       href={item.link}>
-                                                        {item.name} {data.categories.length - 1 === index ? '' : ','}
-                                                    </a>
-                                                )
-                                            }
-                                        </span>
-                                        <span className="tagged_as">Tags:
-                                            {
-                                                data.tags.map((item, index) =>
-                                                    <a key={index}
-                                                       href={item.link}>
-                                                        {item.name} {data.tags.length - 1 === index ? '' : ','}
-                                                    </a>
-                                                )
-                                            }
-                                        </span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         {/* end col */}
                     </div>
                     {/* end row */}
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col col-md-8 col-md-offset-2">
                             <ProductInfoTabs/>
                         </div>
-                    </div>
+                    </div> */}
                     {/* end row */}
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col col-xs-12">
                             <RecentSingleProducts onQuickViewClick={HandelQuickViewData}/>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 {/* end of container */}
             </section>
             {/* end of shop-single-section */}
-            <Instagram/>
+            {/* <Instagram/> */}
             <Footer/>
         </Fragment>
     );

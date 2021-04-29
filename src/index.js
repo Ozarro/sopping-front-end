@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from "react-redux";
 import {BrowserRouter as Router} from "react-router-dom";
+
+
+import store from "./store";
 
 import App from './App';
 
@@ -8,9 +12,12 @@ import App from './App';
  * render App with reactDOM to root element
  */
 ReactDOM.render(
-    <Router>
-        <App/>
-    </Router>
+    <Provider store={store}>
+        <Router>
+            <App/>
+        </Router>
+    </Provider>
     ,
     document.getElementById('root')
+
 );
