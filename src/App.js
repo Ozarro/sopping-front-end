@@ -27,6 +27,7 @@ import SingleVerticalThumbnail from './pages/shop/SingleVerticalThumbnail';
 import ShopSliderImages from './pages/shop/ShopSliderImages';
 import ScrollToTop from "./ScrollToTop";
 import {getPreloadShow} from "./store/ui/select";
+import ProtectedRouter from "./components/common/protectedRouter";
 import { ToastContainer } from "react-toastify";
 
 
@@ -122,15 +123,6 @@ function App() {
                         <Route exact path="/home">
                             <HomeDefault options={options}/>
                         </Route>
-
-                        <Route exact path="/home-style-2">
-                            <Style2 options={options}/>
-                        </Route>
-
-                        <Route exact path="/home-style-3">
-                            <Style3 options={options}/>
-                        </Route>
-
                         <Route exact path="/404">
                             <NotFound options={options}/>
                         </Route>
@@ -147,24 +139,22 @@ function App() {
                             <MyAccount options={options}/>
                         </Route>
 
-                        <Route exact path="/checkout">
+                        <ProtectedRouter exact 
+                        isLoggedIn={false}
+                        path="/checkout">
                             <Checkout options={options}/>
-                        </Route>
+                        </ProtectedRouter>
 
-                        <Route exact path="/cart">
+                        <ProtectedRouter 
+                            isLoggedIn={false}
+                            exact path="/cart"
+                            >
                             <Cart options={options}/>
-                        </Route>
+                        </ProtectedRouter>
 
-                        <Route exact path="/blog-masonary">
+                        <Route exact
+                        path="/blog-masonary">
                             <Masonary options={options}/>
-                        </Route>
-
-                        <Route exact path="/shop-full-width">
-                            <FullWidth options={options}/>
-                        </Route>
-
-                        <Route exact path="/shop-left-sidebar">
-                            <LeftSidebar options={options}/>
                         </Route>
 
                         <Route exact path="/shop-right-sidebar">

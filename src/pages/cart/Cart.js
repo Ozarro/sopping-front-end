@@ -1,4 +1,4 @@
- import React, {Fragment} from 'react';
+ import React, {Fragment , useState, useEffect} from 'react';
 
 import Footer from '../../components/global/Footer';
 import Instagram from '../../components/global/Instagram';
@@ -7,6 +7,14 @@ import Header from '../../components/header/Header';
 import CartItem from "../../components/cart/CartItem";
 import Coupon from "../../components/cart/Coupon";
 import CalculatedShipping from "../../components/cart/CalculatedShipping";
+
+import {useDispatch, useSelector} from "react-redux";
+import {selectAllCartItems, selectZoneArray, selectZoneCities} from "../../store/order/select";
+import {thunks, actions} from "../../store";
+import {toast} from "react-toastify";
+import {BACK_END_URL} from "../../api/index";
+import {Link} from "react-router-dom";
+const FILE_URL = BACK_END_URL.DEFAULT_FILE_URL;
 
 import './cart.css';
 
@@ -17,34 +25,42 @@ import './cart.css';
  * @constructor
  */
 function Cart({ options }) {
+    const dispatch = useDispatch();
+    const cartItems = useSelector(selectAllCartItems);
+    const zoneCities = useSelector(selectZoneCities);
+    const zoneCityArray = useSelector(selectZoneArray);
+    
+    const [orderData, setOrderData] = useState({});
+    const [grandTotal, setGrandTotal] = useState();
 
-    /**
-     * demo data
-     */
-    const cartItemData = [
-        {
-            id: 8,
-            sku: "",
-            img: "/assets/images/cart/img-1.jpg",
-            link: "#",
-            name: "Checked Hoodies Woo",
-            currencySymbol: "£",
-            price: "165.00",
-            qty: 2,
-            total: "330.00"
-        },
-        {
-            id: 21,
-            sku: "",
-            img: "/assets/images/cart/img-2.jpg",
-            link: "#",
-            name: "product2",
-            currencySymbol: "£",
-            price: "100.00",
-            qty: 1,
-            total: "100.00"
+    useEffect(async () => {
+        dispatch(actions.ui.setPreloadShow(true));
+        const res1 = await dispatch(thunks.order.getAllCartItems());
+        const res2 = await dispatch(thunks.order.getAllZoneCities());
+        const res3 = await dispatch(thunks.order.getAllZoneArray());
+        dispatch(actions.ui.setPreloadShow(false));
+        if (res1.status  != 200 | res1.status  != 200 | res1.status  != 200) {
+            toast.error(res1.message);
         }
-    ];
+    },[]);
+
+    useEffect(async () => {
+        let  temp = 0;
+        cartItems.map((item) => {
+            temp += item.quantity * parseFloat(item.cartItemPrice)
+        })
+        setGrandTotal(temp);
+    },[cartItems]);
+
+    const removeCartItem = async (itemId) => {
+        dispatch(actions.ui.setPreloadShow(true));
+        const res1 = await dispatch(thunks.order.removeCartItem(itemId));
+        dispatch(actions.ui.setPreloadShow(false));
+        if (res1.status  != 200 ) {
+            toast.error(res1.message);
+        }
+        toast.success(res1.message)
+    }
 
     return (
         <Fragment>
@@ -72,7 +88,7 @@ function Cart({ options }) {
                                         </thead>
                                         <tbody>
                                         {
-                                            cartItemData.map((item, index) => (
+                                            cartItems.map((item, index) => (
                                                 <CartItem key={index} data={item}/>
                                             ))
                                         }
@@ -81,7 +97,14 @@ function Cart({ options }) {
                                     </table>
                                 </form>
                                 <div className="cart-collaterals">
-                                    <CalculatedShipping currencySymbol="£" price="430.00"/>
+                                    <CalculatedShipping currencySymbol="Rs" price={grandTotal}
+                                    zoneCities = {zoneCities}
+                                    />
+                                    {/* <div className="wc-proceed-to-checkout">
+                                        <Link className="checkout-button button alt wc-forward" to="/checkout">
+                                            Proceed to Checkout
+                                        </Link>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -90,7 +113,7 @@ function Cart({ options }) {
             </section>
             {/* end cart-section */}
 
-            <Instagram/>
+            {/* <Instagram/> */}
             <Footer/>
         </Fragment>
     );

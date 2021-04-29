@@ -37,7 +37,7 @@ export default class userThunk {
    */
   static checkToken() {
     return (dispatch, getState) => {
-      const accessToken = localStorage.getItem("ozarro-access-token");
+      const accessToken = localStorage.getItem("ozarro-user-access-token");
       if (!accessToken) return;
       const payload = jwtDecode(accessToken);
       if (!payload) return;
@@ -53,7 +53,7 @@ export default class userThunk {
         )
       );
 
-      const refreshToken = localStorage.getItem("pv-refresh-token");
+      const refreshToken = localStorage.getItem("ozarro-user-refresh-token");
       if (!refreshToken) {
         // refreshToken = "";
       }

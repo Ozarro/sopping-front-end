@@ -78,7 +78,7 @@ function ShopSliderImages({options}) {
     /**
      * Handle Add to cart function
      */
-    const handleAddToCart = (e) => {
+    const handleAddToCart = async (e) => {
         e.preventDefault();
         dispatch(actions.ui.setPreloadShow(true));
         const itemData = {
@@ -86,7 +86,7 @@ function ShopSliderImages({options}) {
             quantity : productCount,
             price : product.price
         }
-        const res = dispatch(thunks.order.addCartItem());
+        const res = await dispatch(thunks.order.addCartItem());
         if (res.status  != 200) {
             setError(true);
             toast.error(res.message);
