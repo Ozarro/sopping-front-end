@@ -1,5 +1,7 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {Link} from "react-router-dom";
+import BACK_END_URL from "../../api/index";
+const FILE_URL = BACK_END_URL.DEFAULT_FILE_URL;
 
 /**
  * Products
@@ -18,15 +20,15 @@ function Products({HandelQuickViewData, products, ordering}) {
                     products.map((item, index) => (
                         <li key={index} className="product">
                             <div className="product-holder">
-                                {parseInt(item.price) < parseInt(item.oldPrice) ?
+                                {parseInt(item.price) < parseInt(item.price) ?
                                     <div className="product-badge discount">
                                         {
-                                            Math.round(((parseInt(item.price) - parseInt(item.oldPrice)) / parseInt(item.price)) * 100)
+                                            Math.round(((parseInt(item.price) - parseInt(item.price)) / parseInt(item.price)) * 100)
                                         }
                                         %</div> : ''
                                 }
                                 <Link to="/single-slider-images">
-                                    <img loading="lazy" src={process.env.PUBLIC_URL + item.mainImg} alt=""/>
+                                    <img loading="lazy" src={FILE_URL + item.image} alt=""/>
                                 </Link>
                                 <div className="shop-action-wrap">
                                     <ul className="shop-action">
@@ -52,7 +54,7 @@ function Products({HandelQuickViewData, products, ordering}) {
                             <div className="product-info">
                                 <h4>
                                     <Link to="/single-slider-images">
-                                        {item.title}
+                                        {item.pName}
                                     </Link>
                                 </h4>
                                 <span className="woocommerce-Price-amount amount">
@@ -64,16 +66,16 @@ function Products({HandelQuickViewData, products, ordering}) {
                                             </bdi>
                                         </span>
                                     </ins>
-                                    {parseInt(item.price) < parseInt(item.oldPrice) ?
+                                    {parseInt(item.price) < parseInt(item.price) ?
                                         <del>
                                             <span className="woocommerce-Price-amount amount">
                                             <bdi><span
-                                                className="woocommerce-Price-currencySymbol">{item.Symbol}</span>{item.oldPrice}</bdi>
+                                                className="woocommerce-Price-currencySymbol">{item.Symbol}</span>{item.price}</bdi>
                                             </span>
                                         </del> : ''
                                     }
                                 </span>
-                                <p className="product-description">{item.content}</p>
+                                <p className="product-description">{item.description}</p>
                             </div>
                         </li>
                     ))

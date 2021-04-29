@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 
 import Footer from '../../components/global/Footer';
 import Instagram from '../../components/global/Instagram';
@@ -15,14 +15,19 @@ import TagFilterWidget from '../../components/widget/TagFilterWidget';
 import OrderingToolbar from "../../components/shop/OrderingToolbar";
 import Products from "../../components/shop/Products";
 
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+
+
+import {getAllProducts} from "../../store/product/select";
+import { thunks } from "../../store/index";
+
 import './shop.css';
 
 /**
  * demo data
  */
-import productsData from '../../data/products.json';
-import productsData_2 from '../../data/products.json';
-const products = [...productsData, ...productsData_2];
+// const products = [...productsData, ...productsData_2];
 
 /**
  * Shop page with Right Sidebar
@@ -31,13 +36,29 @@ const products = [...productsData, ...productsData_2];
  * @constructor
  */
 function RightSidebar({ options }) {
-
+    const dispatch = useDispatch();
     /**
      * states
      */
     const [showQuickView, setShowQuickView] = useState(false);
     const [quickViewData, setQuickViewData] = useState({});
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+
     const [ordering, setOrdering] = useState(1);
+
+    const products = useSelector(getAllProducts);
+
+    useEffect(async () => {
+        setLoading(true);
+        const res = await dispatch(thunks.product.getAllProducts());
+        setLoading(false);
+        if (res && res.status !== 200) {
+            setError(true);
+            toast.error(res.message);
+        }
+    }, []);
 
     /**
      * Handle Ordering Status

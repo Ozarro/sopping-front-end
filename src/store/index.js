@@ -1,7 +1,6 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
 import uiReducer from "./ui";
-
 import userReducer, {
   setProfileData,
   setTokenData,

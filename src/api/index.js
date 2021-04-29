@@ -3,10 +3,19 @@ import axios from "axios";
 /**
  * Setup Axios
  */
-const BASE_URL_HEROKU = process.env.BASE_URL_HEROKU;
 // const BASE_URL_HEROKU = process.env.BASE_URL_HEROKU;
 // const BASE_URL_LOCAL = process.env.BASE_URL_LOCAL;
+const BASE_URL_HEROKU = "https://ozarro-back-end.herokuapp.com/api";
 const BASE_URL_LOCAL = "http://localhost:8000/api";
+const FILE_URL_HEROKU = "https://ozarro-back-end.herokuapp.com/file/";
+const FILE_URL_LOCAL = "http://localhost:8000/file/";
+
+const DEFAULT_BASE_URL = BASE_URL_LOCAL;
+const DEFAULT_FILE_URL = FILE_URL_LOCAL;
+
+export const BACK_END_URL = {
+  DEFAULT_BASE_URL, DEFAULT_FILE_URL
+};
 
 axios.defaults.baseURL = BASE_URL_HEROKU;
 
