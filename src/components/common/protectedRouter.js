@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 import { getUserId } from "../../store/user/select";
 import { getAccountType } from "../../store/user/select";
+import {toast} from "react-toastify";
 
 const ProtectedRoute = ({ isLoggedIn, userType, location, ...rest }) => {
   if (!isLoggedIn) {
@@ -18,11 +19,12 @@ const ProtectedRoute = ({ isLoggedIn, userType, location, ...rest }) => {
       return <Route {...rest} />;
     }
   }
-
+  toast.error("Only logged in users are allowed to access")
   return (
+    
     <Redirect
       to={{
-        pathname: "/admin/auth/login",
+        pathname: "/my-account",
         state: {
           from: location,
         },

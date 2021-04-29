@@ -75,7 +75,9 @@ export default class orderThunk {
   static getAllCartItems(query) {
     return async (dispatch, getState) => {
       registerAccessToken(getState().user.tokens.access);
+      
       const [res, data] = await api.cart.get.userCartItems(query);
+      console.log("This is get all",res);
       if (res.status === 200) {
         dispatch(setCartItems(data));
       }

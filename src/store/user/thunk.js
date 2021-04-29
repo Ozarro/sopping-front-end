@@ -66,7 +66,6 @@ export default class userThunk {
       );
     };
   }
-
   /**
    * Getters
    * @returns {function(*, *): Promise<{message: string, status: number}|{message: *, status: *}|{status: number}>}

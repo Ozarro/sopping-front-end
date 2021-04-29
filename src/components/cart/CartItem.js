@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import {Link} from "react-router-dom";
 import {BACK_END_URL} from "../../api/index";
 const FILE_URL = BACK_END_URL.DEFAULT_FILE_URL;
 
@@ -22,7 +23,10 @@ function CartItem({data}) {
                     </a>
                 </td>
                 <td className="product-name" data-title="Product">
-                    <Link to={`/single-slider-images/${data.pCode}`} params = {{pCode : item.pCode}}>
+                    <Link to={{
+                                    pathname : `/single-slider-images`,
+                                    pCode : data.pCode
+                                    }}>
                         {data.pName}
                     </Link>
                 </td>
@@ -42,7 +46,7 @@ function CartItem({data}) {
                 <td className="product-subtotal" data-title="Total">
                     <span className="woocommerce-Price-amount amount">
                         <span className="woocommerce-Price-currencySymbol">Rs. </span>
-                        {item.quantity * parseFloat(item.cartItemPrice)}
+                        {(data)? data.quantity * parseFloat(data.cartItemPrice): ""}
                     </span>
                 </td>
             </tr>

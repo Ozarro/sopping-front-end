@@ -25,6 +25,7 @@ axios.defaults.baseURL = BASE_URL_HEROKU;
  */
 export const registerAccessToken = (token) => {
   axios.defaults.headers["authorization"] = `Bearer ${token}`;
+  console.log("default header", axios.defaults.headers);
 };
 
 /**

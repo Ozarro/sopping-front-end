@@ -26,7 +26,10 @@ function Products({HandelQuickViewData, products, ordering}) {
                                         }
                                         %</div> : ''
                                 }
-                                <Link to={`/single-slider-images/${item.pCode}`} params = {{pCode : item.pCode}}>
+                                <Link to={{
+                                    pathname : `/single-slider-images`,
+                                    pCode : item.pCode
+                                    }} params = {{pCode : item.pCode}}>
                                     <img loading="lazy" src={FILE_URL + item.image} alt="Product Image"/>
                                 </Link>
                                 <div className="shop-action-wrap">

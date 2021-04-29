@@ -13,6 +13,7 @@ import api from "../../api/index";
 import {useDispatch, useSelector} from "react-redux";
 import {getAccessToken, getRefreshToken} from "../../store/user/select";
 import {thunks, actions, cleanQuery} from "../../store";
+import { useHistory } from 'react-router';
 
 /**
  * My Account Page
@@ -21,6 +22,7 @@ import {thunks, actions, cleanQuery} from "../../store";
  * @constructor
  */
 function MyAccount({ options }) {
+    let history = useHistory();
     const dispatch = useDispatch();
 
     /**
@@ -31,6 +33,8 @@ function MyAccount({ options }) {
 
     const [loginData, setLogInData] = useState({});
     const [registerData, setRegisterData] = useState({});
+    const [errors, setErrors] = useState({});
+    const [btnDisable, setBtnDisable] = useState({});
 
     /**
      * check this function
@@ -39,79 +43,42 @@ function MyAccount({ options }) {
         e.preventDefault();
     };
 
-
-    const comparePassword = () => {
-        return (value, helper) => {
-          if (value !== this.state.data.password) {
-            return helper.error("any.invalid");
-          }
-          return value;
-        };
-        }
-
-    /**
-     * 
-     * Joi Schemas
-     */
-    //  const loginSchema = {
-    //     email: Joi.string()
-    //       .email({ tlds: { allow: false } })
-    //       .required()
-    //       .label("Email"),
-    //     password: Joi.string().required().label("Password"),
-    //   };
-
-    /**
-   * Schema  Register joi validation
-   */
-//   const registerSchema = {
-//     name: Joi.string().label("Name"),
-//     email: Joi.string()
-//       .email({ tlds: { allow: false } })
-//       .required()
-//       .label("Email"),
-//     password: Joi.string().min(6).required().label("Password"),
-//     confirmPassword: Joi.string()
-//       .custom(comparePassword())
-//       .required()
-//       .label("Confirm Password")
-//       .messages({
-//         "any.invalid": "Repeat password does not match with the above password",
-//       }),
-//   };
-
-
     const handleLogInSubmit = async (e) => {
         e.preventDefault();
         dispatch(actions.ui.setPreloadShow(true));
         const data = cleanQuery(loginData, ["email", "password"])
         console.log("data", data);
         const res = await dispatch(thunks.user.userLogin(data.email, data.password));
-        console.log(res);
         dispatch(actions.ui.setPreloadShow(false));
-        
         if(res.status === 200){
+            console.log("login response",res);
             toast.success(res.message); 
-            localStorage.setItem("ozarro-user-access-token", accessToken );
-            localStorage.setItem("ozarro-user-refresh-token", refreshToken );
+            console.log("Access Token", accessToken);
+            localStorage.setItem("ozarro-user-access-token",  accessToken );
+            localStorage.setItem("ozarro-user-refresh-token",  refreshToken );
+
             history.push('/home');
         }else{
             toast.error(res.message);
-            
         }
 
     }
 
     const handleRegisterSubmit = async (e) => {
         e.preventDefault();
+        if(registerData.password != registerData.confirmPassword){
+            toast.error("Confirm password doesn't match with password");
+            return;
+        }
         dispatch(actions.ui.setPreloadShow(true));
         const data = cleanQuery(registerData, ["email","name", "password"])
         const res = await api.user.add.user(data);
         dispatch(actions.ui.setPreloadShow(false));
         if(res.status === 200){
-            toast.success(res.message); 
+            toast.success(res.data.message); 
         }else{
-            toast.error(res.message); 
+            console.log(res);
+            toast.error((res[0]) ? res[0].message : res.message); 
         }
 
     }
@@ -173,19 +140,6 @@ function MyAccount({ options }) {
                                                        />
                                             </p>
                                             <p className="form-row">
-                                                <label
-                                                    className="woocommerce-form__label woocommerce-form__label-for-checkbox woocommerce-form-login__rememberme">
-                                                    <input
-                                                        className="woocommerce-form__input woocommerce-form__input-checkbox"
-                                                        name="rememberme" type="checkbox" id="rememberme"
-                                                        defaultValue="forever" 
-                                                        value={(loginData.rememberme) ? loginData.rememberme : "forever" }
-                                                        onChange={loginHandleChange}
-                                                         /> <span>Remember me</span>
-                                                </label>
-                                                {/* <input type="hidden" id="woocommerce-login-nonce"
-                                                       name="woocommerce-login-nonce" defaultValue="f0e969fd27"/><input
-                                                type="hidden" name="_wp_http_referer" defaultValue="/my-account/"/> */}
                                                 <button onClick={handleLogInSubmit} type="submit"
                                                         className="woocommerce-button button woocommerce-form-login__submit"
                                                         name="login" value="Log in">Log in
@@ -249,11 +203,6 @@ function MyAccount({ options }) {
                                                     className="woocommerce-privacy-policy-link" >privacy policy</a>.</p>
                                             </div>
                                             <p className="woocommerce-form-row form-row">
-                                                {/* <input type="hidden" id="woocommerce-register-nonce"
-                                                       name="woocommerce-register-nonce"
-                                                       defaultValue="2361821e0b"/><input type="hidden"
-                                                                                         name="_wp_http_referer"
-                                                                                         defaultValue="/my-account/"/> */}
                                                 <button onClick={handleRegisterSubmit} type="submit"
                                                         className="woocommerce-Button woocommerce-button button woocommerce-form-register__submit"
                                                         name="register" value="Register">Register

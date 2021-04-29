@@ -75,8 +75,7 @@ function HomeDefault({ options }) {
 
             {/* <BestSeller onQuickViewClick={HandelQuickViewData}/> */}
 
-            {/* <Instagram/> */}
-
+            <Instagram/>
             <Footer/>
 
             {/* <NewsletterPopup/> */}

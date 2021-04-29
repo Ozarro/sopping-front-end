@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useDebugValue, useEffect } from 'react';
 import {useState, Fragment} from 'react';
 import Footer from '../../components/global/Footer';
 import Instagram from '../../components/global/Instagram';
@@ -9,6 +9,13 @@ import BillingFields from './BillingFields';
 import ShippingFields from './ShippingFields';
 import NoscriptSnippet from "../../components/global/NoscriptSnippet";
 
+import {useDispatch, useSelector} from "react-redux";
+import {selectAllCartItems, selectZoneCities,
+    selectAllCoupons} from "../../store/order/select";
+import {thunks, actions} from "../../store";
+import {toast} from "react-toastify";
+import order from '../../store/order';
+
 
 /**
  * Checkout page
@@ -17,21 +24,62 @@ import NoscriptSnippet from "../../components/global/NoscriptSnippet";
  * @constructor
  */
 function Checkout({ options }) {
+    const dispatch = useDispatch();
+
+    /**
+     * Selectors
+     */
+    const cartItems = useSelector(selectAllCartItems);
+    const coupons = useSelector(selectAllCoupons);
+    const zoneCities = useSelector(selectZoneCities);
 
     /**
      * states
      */
     const [showLogin, setShowLogin] = useState(false);
     const [showShowCoupon, setShowShowCoupon] = useState(false);
+    const [coupon, setCouponData] = useState({});
+    const [orderData, setOrderData] = useState({deliveryCharge : 0});
+    const [couponCode, setCouponCode] = useState("");
+    const [subTotal , setSubTotal] = useState();
+    const [grandTotal , setGrandTotal] = useState(0);
 
+
+    useEffect( async () => {
+        dispatch(actions.ui.setPreloadShow(true));
+        const res1 = await dispatch(thunks.order.getAllCartItems());
+        const res2 = await dispatch(thunks.order.getAllCoupons());
+        const res3 = await dispatch(thunks.order.getAllZoneCities());
+        dispatch(actions.ui.setPreloadShow(false));
+        if (res1.status  != 200 | res2.status != 200 | res3.status != 200) {
+            toast.error(res1.message);
+        }
+        let subTotal = 0;
+        cartItems.map((item) => {
+            subTotal += parseFloat(item.cartItemPrice)*item.quantity
+        })
+        setSubTotal(subTotal);
+
+    } ,[])
+
+    useEffect(  () => {
+        let couponAmount = 0
+        let grandTotal = 0
+        if(Object.keys(coupon) != 0){
+            couponAmount = coupon.amount
+        }
+        const deliveryCharge = (orderData.deliveryCharge) ? parseFloat(orderData.deliveryCharge)  : 0;
+        grandTotal = subTotal +deliveryCharge -couponAmount
+        setGrandTotal(grandTotal);
+
+
+    } ,[])
+
+    
+    
     /**
      * Handle state
      */
-    const HandleShowLoginStatus = (e) => {
-        e.preventDefault();
-        HandelCloseTabs();
-        setShowLogin(!showLogin);
-    };
 
     const HandelShowCouponStatus = (e) => {
         e.preventDefault();
@@ -45,22 +93,65 @@ function Checkout({ options }) {
     };
 
     /**
-     * demo data
+     * 
+     * Data Handle Functions
      */
-    const checkoutData = {
-        product: [
-            {
-                name: "Checked Hoodies Woo",
-                price: "165.00",
-                quantity: 1
-            },
-
-        ],
-        currencySymbol: "£",
-        shipping: "Free Shipping",
-        subtotal: "165.00",
-        total: "165.00"
+    const handleOrderDataChange = ({ currentTarget: input }) => {
+        const { name, value } = input;
+        const data = {...orderData};
+        data[name] = value;
+        setOrderData(data);
     };
+
+    const handleCouponDataChange = ({ currentTarget: input }) => {
+        const { name, value } = input;
+        setCouponCode(value);
+    };
+
+    const handleOrderPlaceSubmit = async (e) => {
+        e.preventDefault();
+        dispatch(actions.ui.setPreloadShow(true));
+        const data = cleanQuery(orderData, 
+            ["couponCode","couponAmount", "paymentMethod", "grandTotal", "street1", "street2"
+            , "city", "mobile", "deliveryCharge", "cartItems"
+        ])
+
+        let cartItemList = [];
+        cartItems.map((item) => {
+            cartItemList.push(item.itemId)
+        })
+
+        const res = await dispatch(thunks.order.addOrder({...data, cartItems : cartItemList}));
+        dispatch(actions.ui.setPreloadShow(false));
+        if(res.status === 200){
+            console.log("Order Place response",res);
+            toast.success(res.message); 
+        }else{
+            console.log(res);
+            toast.error((res[0]) ? res[0].message : res.message); 
+        }
+
+    }
+
+    const handleCouponApplySubmit = (e) => {
+        e.preventDefault();
+        const couponD = coupons.filter(item => {
+            return(item.couponCode == couponCode && item.status == "Available" &&
+                new Date(item.expiryDate) > new Date()
+            )})
+
+        if(couponD && Object.keys(couponD[0]) != 0){
+            if(coupon.amount >= subTotal){
+                toast.error("You can not apply this coupon on this items");
+                return;
+            }
+            setCouponData(couponD[0])
+            console.log(couponD);
+            toast.success("Coupon Code is valid")
+        }else{
+            toast.error("Coupon code is invalid")
+        }
+    }
 
     return (
         <Fragment>
@@ -74,53 +165,6 @@ function Checkout({ options }) {
                     <div className="row">
                         <div className="col col-xs-12">
                             <div className="woocommerce">
-                                <div className="woocommerce-info">
-                                    Returning customer?
-                                    <a onClick={HandleShowLoginStatus} href="#" className="showlogin">Click
-                                        here to login
-                                    </a>
-                                </div>
-                                {
-                                    showLogin ?
-                                        <form method="post" className="login">
-                                            <p>If you have shopped with us before, please enter your details in the
-                                                boxes below. If you are a new customer, please proceed to the
-                                                Billing &amp; Shipping section.</p>
-                                            <p className="form-row form-row-first">
-                                                <label htmlFor="username">Username or email <span
-                                                    className="required">*</span></label>
-                                                <input type="text" className="input-text" name="username"
-                                                       id="username"/>
-                                            </p>
-                                            <p className="form-row form-row-last">
-                                                <label htmlFor="password">Password <span
-                                                    className="required">*</span></label>
-                                                <input className="input-text" type="password" name="password"
-                                                       id="password"/>
-                                            </p>
-                                            <div className="clear"/>
-                                            <p className="form-row">
-                                                <input type="hidden" id="_wpnonce" name="_wpnonce"
-                                                       defaultValue="94dfaf2ac1"/>
-                                                <input type="hidden" name="_wp_http_referer"
-                                                       defaultValue="/wp/?page_id=6"/>
-                                                <input type="submit" className="button" name="login"
-                                                       defaultValue="Login"/>
-                                                <input type="hidden" name="redirect"
-                                                       defaultValue="http://localhost/wp/?page_id=6"/>
-                                                <label htmlFor="rememberme" className="inline">
-                                                    <input name="rememberme" type="checkbox" id="rememberme"
-                                                           defaultValue="forever"/> Remember me </label>
-                                            </p>
-                                            <p className="lost_password">
-                                                <a href="http://localhost/wp/?page_id=7&lost-password">Lost your
-                                                    password?</a>
-                                            </p>
-                                            <div className="clear"/>
-                                        </form>
-                                        : ''
-                                }
-
                                 <div className="woocommerce-info">Have a coupon? <a onClick={HandelShowCouponStatus}
                                                                                     href="#" className="showcoupon">Click
                                     here to enter your code</a></div>
@@ -129,12 +173,17 @@ function Checkout({ options }) {
                                         ?
                                         <form className="checkout_coupon" method="post">
                                             <p className="form-row form-row-first">
-                                                <input type="text" name="coupon_code" className="input-text"
-                                                       placeholder="Coupon code" id="coupon_code"/>
+                                                <input type="text" name="couponCode" className="input-text"
+                                                       placeholder="Coupon code" id="couponCode"
+                                                       onChange={handleCouponDataChange}
+                                                       value={couponCode}
+                                                       />
                                             </p>
                                             <p className="form-row form-row-last">
                                                 <input type="submit" className="button" name="apply_coupon"
-                                                       defaultValue="Apply Coupon"/>
+                                                       defaultValue="Apply Coupon"
+                                                        onClick={handleCouponApplySubmit}
+                                                       />
                                             </p>
                                             <div className="clear"/>
                                         </form>
@@ -144,8 +193,13 @@ function Checkout({ options }) {
                                 <form name="checkout" method="post" className="checkout woocommerce-checkout"
                                       action="/?page_id=6" encType="multipart/form-data">
                                     <div className="col2-set" id="customer_details">
-                                        <BillingFields/>
-                                        <ShippingFields/>
+                                        <BillingFields
+                                            orderData={orderData}
+                                            zoneCities={zoneCities}
+                                            handleOrderDataChange={handleOrderDataChange}
+
+                                        />
+                                        {/*<ShippingFields/>*/}
                                     </div>
                                     <h3 id="order_review_heading">Your order</h3>
                                     <div id="order_review" className="woocommerce-checkout-review-order">
@@ -159,14 +213,14 @@ function Checkout({ options }) {
                                             <tbody>
 
                                             {
-                                                checkoutData.product.map((item, index) => (
+                                                cartItems.map((item, index) => (
                                                     <tr key={index} className="cart_item">
                                                         <td className="product-name">
-                                                            {item.name} &nbsp; <strong className="product-quantity">×
+                                                            {item.pName} &nbsp; <strong className="product-quantity">×
                                                             {item.quantity}</strong></td>
                                                         <td className="product-total">
                                                         <span className="woocommerce-Price-amount amount"><span
-                                                            className="woocommerce-Price-currencySymbol">{checkoutData.currencySymbol}</span>{item.price}</span>
+                                                            className="woocommerce-Price-currencySymbol">Rs. </span>{item.quantity*parseFloat(item.cartItemPrice)}</span>
                                                         </td>
                                                     </tr>
                                                 ))
@@ -177,22 +231,25 @@ function Checkout({ options }) {
                                             <tr className="cart-subtotal">
                                                 <th>Subtotal</th>
                                                 <td><span className="woocommerce-Price-amount amount"><span
-                                                    className="woocommerce-Price-currencySymbol">{checkoutData.currencySymbol}</span>{checkoutData.subtotal}</span>
+                                                    className="woocommerce-Price-currencySymbol">Rs. </span>{subTotal}</span>
                                                 </td>
                                             </tr>
                                             <tr className="shipping">
-                                                <th>Shipping</th>
+                                                <th>Coupon Amount</th>
+                                                <td data-title="Coupon">
+                                                    {coupon.amount}
+                                                </td>
+                                            </tr>
+                                            <tr className="shipping">
+                                                <th>Delivery Charge</th>
                                                 <td data-title="Shipping">
-                                                    {checkoutData.shipping}
-                                                    <input type="hidden" name="shipping_method[0]" data-index={0}
-                                                           id="shipping_method_0" defaultValue="free_shipping:1"
-                                                           className="shipping_method"/>
+                                                    {orderData.deliveryCharge}
                                                 </td>
                                             </tr>
                                             <tr className="order-total">
                                                 <th>Total</th>
                                                 <td><strong><span className="woocommerce-Price-amount amount"><span
-                                                    className="woocommerce-Price-currencySymbol">{checkoutData.currencySymbol}</span>{checkoutData.total}</span></strong>
+                                                    className="woocommerce-Price-currencySymbol">Rs. </span>{grandTotal}</span></strong>
                                                 </td>
                                             </tr>
                                             </tfoot>

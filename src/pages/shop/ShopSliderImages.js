@@ -1,5 +1,6 @@
 import React, {useState, Fragment, useEffect} from 'react';
 import Slider from "react-slick";
+import { useHistory , useLocation} from "react-router-dom";
 
 import Footer from '../../components/global/Footer';
 import Instagram from '../../components/global/Instagram';
@@ -23,6 +24,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getAllCategories, getAllProducts} from "../../store/product/select";
 import {thunks, actions} from "../../store";
 import {toast} from "react-toastify";
+import { getUserId } from '../../store/user/select';
 
 
 /**
@@ -33,7 +35,9 @@ import {toast} from "react-toastify";
  */
 function ShopSliderImages({options}) {
     const dispatch = useDispatch();
-    const {pCode} = useParams();
+    let location = useLocation();
+    let history = useHistory();
+    const {pCode} = location;
 
     const [error, setError] = useState(false);
     const [product, setProduct] = useState({});
@@ -42,7 +46,6 @@ function ShopSliderImages({options}) {
     const getProductByCode = (pCode , products) => {
         let product ;
         if(products){
-            
             product = products.find((item) => {
                return item.pCode == pCode;
             })
@@ -54,6 +57,7 @@ function ShopSliderImages({options}) {
     }
 
     const products = useSelector(getAllProducts);
+    const userId = useSelector(getUserId);
 
     useEffect(async () => {
         dispatch(actions.ui.setPreloadShow(true));
@@ -64,8 +68,6 @@ function ShopSliderImages({options}) {
         }
         setProduct(getProductByCode(pCode, products));
         dispatch(actions.ui.setPreloadShow(false));
-        toast.error("Product not found");
-       
     },[]);
 
     /**
@@ -80,13 +82,18 @@ function ShopSliderImages({options}) {
      */
     const handleAddToCart = async (e) => {
         e.preventDefault();
-        dispatch(actions.ui.setPreloadShow(true));
         const itemData = {
             pCode : product.pCode,
             quantity : productCount,
             price : product.price
         }
+        if(!userId){
+            toast.error("Only logged in user are allowed to add items to cart");
+            return;
+        }
+        dispatch(actions.ui.setPreloadShow(true));
         const res = await dispatch(thunks.order.addCartItem());
+        dispatch(actions.ui.setPreloadShow(false));
         if (res.status  != 200) {
             setError(true);
             toast.error(res.message);
@@ -198,7 +205,9 @@ function ShopSliderImages({options}) {
                                                        value={productCount} name="product-count"/>
                                             </div>
                                             <div>
-                                                <button type="submit">Add to cart</button>
+                                                <button type="submit"
+                                                onClick={handleAddToCart} 
+                                                >Add to cart</button>
                                             </div>
                                         </div>
                                     </form>

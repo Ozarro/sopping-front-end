@@ -92,7 +92,7 @@ function Cart({ options }) {
                                                 <CartItem key={index} data={item}/>
                                             ))
                                         }
-                                        <Coupon/>
+                                        
                                         </tbody>
                                     </table>
                                 </form>

@@ -1,6 +1,5 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import {Switch, Route} from "react-router-dom";
-import {useSelector} from "react-redux";
 
 import HttpsRedirect from 'react-https-redirect';
 
@@ -28,11 +27,15 @@ import ShopSliderImages from './pages/shop/ShopSliderImages';
 import ScrollToTop from "./ScrollToTop";
 import {getPreloadShow} from "./store/ui/select";
 import ProtectedRouter from "./components/common/protectedRouter";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer,toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import {useDispatch, useSelector} from "react-redux";
 
+import {thunks, actions} from "./store";
 
 function App() {
-
+    const dispatch = useDispatch();
+    dispatch(thunks.user.checkToken());
     /**
      * mini cart state
      * left side info state
@@ -106,6 +109,18 @@ function App() {
                 <div
                     className={"page-wrapper " + (showSideInfo || showMobileNav || showMiniCart ? 'active-body-overlay' : '')}>
 
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
+
                     <div
                         className="body-overlay"
                         onClick={HandelOverlayStatus}
@@ -140,13 +155,13 @@ function App() {
                         </Route>
 
                         <ProtectedRouter exact 
-                        isLoggedIn={false}
+                        isLoggedIn={true}
                         path="/checkout">
                             <Checkout options={options}/>
                         </ProtectedRouter>
 
                         <ProtectedRouter 
-                            isLoggedIn={false}
+                            isLoggedIn={true}
                             exact path="/cart"
                             >
                             <Cart options={options}/>
@@ -173,7 +188,7 @@ function App() {
                             <SingleVerticalThumbnail options={options}/>
                         </Route> */}
 
-                        <Route exact path="/single-slider-images/:pCode">
+                        <Route exact path="/single-slider-images">
                             <ShopSliderImages options={options}/>
                         </Route>
 
@@ -182,17 +197,6 @@ function App() {
                         </Route>
 
                     </Switch>
-                    <ToastContainer
-                        position="top-right"
-                        autoClose={10000}
-                        hideProgressBar={false}
-                        newestOnTop={false}
-                        closeOnClick
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        />
                 </div>
             </Fragment>
         </HttpsRedirect>
