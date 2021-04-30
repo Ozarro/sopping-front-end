@@ -20,7 +20,7 @@ function HeaderLeft({options}) {
                     <button className="btn side-info-close-btn" onClick={options.onSideInfoClick}><i className="ti-close"/>
                     </button>
                     <div className="logo">
-                        <img src={process.env.PUBLIC_URL + "/assets/images/slidbar-logo.png"} alt=""/>
+                        <img src={process.env.PUBLIC_URL + "/assets/images/logo.png"} alt=""/>
                     </div>
                     <div className="text">
                         <p>Covered the whole of her lower arm towards the viewer gregor then turned to look out

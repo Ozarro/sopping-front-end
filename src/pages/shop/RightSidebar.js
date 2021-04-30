@@ -150,7 +150,7 @@ function RightSidebar({ options }) {
                                         />
 
                                     </div>
-                                    <Pagination extraClass=""/>
+                                    {/*<Pagination extraClass=""/>*/}
                                 </div>
                                 <div className="shop-sidebar">
                                     {/* <SearchWidget title=""/> */}

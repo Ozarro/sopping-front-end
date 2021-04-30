@@ -68,12 +68,8 @@ function HomeDefault({ options }) {
             <FeaturedProducts/>
 
             <RecentProducts onQuickViewClick={HandelQuickViewData}/>
-
-            {/* <Categories/> */}
-
             <CtaSection/>
 
-            {/* <BestSeller onQuickViewClick={HandelQuickViewData}/> */}
 
             <Instagram/>
             <Footer/>

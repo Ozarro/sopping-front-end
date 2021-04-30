@@ -10,7 +10,7 @@ const BASE_URL_LOCAL = "http://localhost:8000/api";
 const FILE_URL_HEROKU = "https://ozarro-back-end.herokuapp.com/file/";
 const FILE_URL_LOCAL = "http://localhost:8000/file/";
 
-const DEFAULT_BASE_URL = BASE_URL_LOCAL;
+const DEFAULT_BASE_URL = BASE_URL_HEROKU;
 const DEFAULT_FILE_URL = FILE_URL_HEROKU;
 
 export const BACK_END_URL = {

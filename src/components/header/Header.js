@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import HeaderRight from './HeaderRight';
@@ -9,6 +9,10 @@ import Navbar from './Navbar';
  * demo data
  */
 import data from '../../data/topbar-text.json';
+import {useDispatch, useSelector} from "react-redux";
+import {    selectAllCoupons} from "../../store/order/select";
+import {thunks, actions, cleanQuery} from "../../store";
+import {toast} from "react-toastify";
 
 /**
  * Header component
@@ -17,6 +21,28 @@ import data from '../../data/topbar-text.json';
  * @constructor
  */
 function Header({ options }) {
+    const dispatch = useDispatch();
+    const coupons = useSelector(selectAllCoupons);
+    const [coupon, setCoupon] = useState();
+
+    const randomCoupon = () => {
+        return coupons[Math.floor(Math.random() * coupons.length)];
+    }
+
+
+    useEffect( async () => {
+        dispatch(actions.ui.setPreloadShow(true));
+        const res1 = await dispatch(thunks.order.getAllCoupons());
+        dispatch(actions.ui.setPreloadShow(false));
+        if (res1.status  != 200 ) {
+            return;
+        }
+    } ,[])
+
+    useEffect( async () => {
+        setCoupon(randomCoupon())
+    } ,[coupons])
+
 
     return (
         <Fragment>
@@ -24,7 +50,7 @@ function Header({ options }) {
             <header id="header" className="site-header header-style-1">
                 <div className="topbar">
                     <div className="topbar-text">
-                        <p>{data.content}</p>
+                        <p>{`Join our showroom and get offers Coupon code : ${(coupon) ? coupon.couponCode : ""}`}</p>
                     </div>
                 </div>
                 {/* end topbar */}

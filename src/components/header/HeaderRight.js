@@ -1,7 +1,15 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import './navbarRight.css'
 import {Link, NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {selectAllCartItems} from "../../store/order/select";
+import {getUserData} from "../../store/user/select";
+import {actions, thunks} from "../../store";
+import {toast} from "react-toastify";
 
+
+import {BACK_END_URL} from "../../api/index";
+const FILE_URL = BACK_END_URL.DEFAULT_FILE_URL;
 
 /**
  * right side of header include minicart, and buttons
@@ -10,67 +18,108 @@ import {Link, NavLink} from "react-router-dom";
  * @constructor
  */
 function HeaderRight({options}) {
+    const dispatch = useDispatch();
+    const cartItems = useSelector(selectAllCartItems);
+    const userData = useSelector(getUserData);
 
-    const miniCartData = {
-        product: [
-            {
-                id: "",
-                name: "Elegant skirt",
-                qty: 1,
-                price: "20.15",
-                img: "/assets/images/shop/mini-cart/img-1.jpg",
-                link: "/single-slider-images"
-            },
-            {
-                id: "",
-                name: "Beautiful tops",
-                qty: 1,
-                price: "13.25",
-                img: "/assets/images/shop/mini-cart/img-2.jpg",
-                link: "/single-slider-images"
-            }
-        ],
-        subtotal: "215.14",
-        symbol: "$"
+    const [subTotal , setSubTotal] = useState(0);
+
+    useEffect(async () => {
+        dispatch(actions.ui.setPreloadShow(true));
+        const res1 = await dispatch(thunks.order.getAllCartItems());
+        dispatch(actions.ui.setPreloadShow(false));
+        if (res1.status  != 200 ) {
+            // toast.error(res1.message);
+        }
+    },[]);
+
+    useEffect( () => {
+        let subTotal = 0;
+        cartItems.map((item) => {
+            subTotal += parseFloat(item.cartItemPrice)*item.quantity
+        })
+        setSubTotal(subTotal);
+
+    }, [cartItems])
+
+    const handleLogout = () => {
+        if(userData.userId == ""){
+            toast.error("You have not signed in. Sign in first")
+            return;
+        }
+        if (localStorage.getItem("ozarro-user-access-token")) {
+            localStorage.removeItem("ozarro-user-access-token");
+        }
+        if (localStorage.getItem("ozarro-user-refresh-token")) {
+            localStorage.removeItem("ozarro-user-refresh-token");
+        }
+        toast.success("Logged out successfully");
+        window.location.reload(false);
     };
+
+
 
     return (
         <Fragment>
             <div className="header-right">
-                <div className="my-account-link">
-                    <Link className="" to="/my-account">
-                        <i className="icon-user"/>
-                    </Link>
-                </div>
-                <div className="wishlist-box">
-                    <a href="#"><i className="icon-heart-shape-outline"/></a>
-                </div>
                 <div className="mini-cart">
-                    <button className="cart-toggle-btn" onClick={options.onMiniCartClick}>
-                        <i className="icon-large-paper-bag"/>
-                        <span className="cart-count">{miniCartData.product.length}</span>
+                    <button className="cart-toggle-btn" onClick={options.onMiniUserClick}>
+                        <i className="icon-user"/>
                     </button>
-                    <div className={"mini-cart-content " + (options.miniCart ? 'mini-cart-content-toggle' : '')}>
+                    <div className={"mini-cart-content " + (options.miniUser ? 'mini-cart-content-toggle' : '')}>
                         <div className="mini-cart-items">
                             {
-                                miniCartData.product.map((item, index) => (
+                                cartItems.map((item, index) => (
                                     <div key={index} className="mini-cart-item clearfix">
-                                        <div className="mini-cart-item-image">
-                                            <NavLink to={item.link}>
-                                                <img src={process.env.PUBLIC_URL + item.img} alt=""/>
-                                            </NavLink>
-                                        </div>
+                                        {/*<div className="mini-cart-item-image">*/}
+                                        {/*    <img src={FILE_URL + item.image} alt=""/>*/}
+                                        {/*</div>*/}
                                         <div className="mini-cart-item-des">
-                                            <NavLink to={item.link}>{item.name}</NavLink>
-                                            <span className="mini-cart-item-quantity">Qty: {item.qty}</span>
-                                            <span className="mini-cart-item-price">{miniCartData.symbol}{item.price}</span>
+                                            <span className="mini-cart-item-quantity">Hy </span>
+                                            {(userData) ? userData.name : ""}
+
                                         </div>
                                     </div>
                                 ))
                             }
                         </div>
                         <div className="mini-cart-action clearfix">
-                            <span className="mini-checkout-price">Subtotal: {miniCartData.symbol}{miniCartData.subtotal}</span>
+                            <Link className="view-cart-btn" to="/my-account">
+                                My Account
+                            </Link>
+                            <Link className="checkout-btn" onClick={handleLogout}>
+                                Logout
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div className="mini-cart">
+                    <button className="cart-toggle-btn" onClick={options.onMiniCartClick}>
+                        <i className="icon-large-paper-bag"/>
+                        <span className="cart-count">{cartItems.length}</span>
+                    </button>
+                    <div className={"mini-cart-content " + (options.miniCart ? 'mini-cart-content-toggle' : '')}>
+                        <div className="mini-cart-items">
+                            {
+                                cartItems.map((item, index) => (
+                                    <div key={index} className="mini-cart-item clearfix">
+                                        <div className="mini-cart-item-image">
+                                                <img src={FILE_URL + item.image} alt=""/>
+                                        </div>
+                                        <div className="mini-cart-item-des">
+                                                {item.pName}
+                                            <span className="mini-cart-item-quantity">Qty: {item.quantity}</span>
+                                            <span className="mini-cart-item-price">Rs. {item.cartItemPrice}</span>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                        <div className="mini-cart-action clearfix">
+
                             <Link className="view-cart-btn" to="/cart">
                                 View Cart
                             </Link>

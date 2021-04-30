@@ -44,6 +44,7 @@ function App() {
      */
 
     const [showMiniCart, setShowMiniCart] = useState(false);
+    const [showMiniUser, setShowMiniUser] = useState(false);
     const [showSideInfo, setShowSideInfo] = useState(false);
     const [showMobileNav, setShowMobileNav] = useState(false);
     const showPreloader = useSelector(getPreloadShow);
@@ -54,6 +55,10 @@ function App() {
      */
     const HandelMiniCartStatus = () => {
         setShowMiniCart(!showMiniCart);
+    };
+
+    const HandelMiniUserStatus = () => {
+        setShowMiniUser(!showMiniUser);
     };
 
     /**
@@ -80,6 +85,7 @@ function App() {
         setShowMiniCart(false);
         setShowSideInfo(false);
         setShowMobileNav(false);
+        setShowMiniUser(false);
     };
 
     /**
@@ -98,16 +104,18 @@ function App() {
         sideInfo: showSideInfo,
         mobileNav: showMobileNav,
         miniCart: showMiniCart,
+        miniUser : showMiniUser,
         onSideInfoClick: HandelSideInfoStatus,
         onMobileNavClick: HandelMobileNavStatus,
-        onMiniCartClick: HandelMiniCartStatus
+        onMiniCartClick: HandelMiniCartStatus,
+        onMiniUserClick: HandelMiniUserStatus
     };
 
     return (
         <HttpsRedirect>
             <Fragment>
                 <div
-                    className={"page-wrapper " + (showSideInfo || showMobileNav || showMiniCart ? 'active-body-overlay' : '')}>
+                    className={"page-wrapper " + (showSideInfo || showMobileNav || showMiniUser|| showMiniCart  ? 'active-body-overlay' : '')}>
 
                     <ToastContainer
                         position="top-right"
@@ -167,26 +175,10 @@ function App() {
                             <Cart options={options}/>
                         </ProtectedRouter>
 
-                        <Route exact
-                        path="/blog-masonary">
-                            <Masonary options={options}/>
-                        </Route>
-
                         <Route exact path="/shop-right-sidebar">
                             <RightSidebar options={options}/>
                         </Route>
 
-                        <Route exact path="/blog">
-                            <Blog options={options}/>
-                        </Route>
-
-                        <Route exact path="/blog-single">
-                            <BlogSingle options={options}/>
-                        </Route>
-
-                        {/* <Route exact path="/single-vertical-thumbnail">
-                            <SingleVerticalThumbnail options={options}/>
-                        </Route> */}
 
                         <Route exact path="/single-slider-images">
                             <ShopSliderImages options={options}/>
