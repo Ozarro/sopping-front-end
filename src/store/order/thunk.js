@@ -19,7 +19,7 @@ export default class orderThunk {
       registerAccessToken(getState().user.tokens.access);
       const [res, data] = await api.order.add.order(orderData);
       if (res.status === 200) {
-        const [res1, data] = await api.order.get.userOrders();
+        const [res1, data] = await api.cart.get.userCartItems();
         if (res1.status === 200) {
           dispatch(setOrders(data));
         }
@@ -77,7 +77,6 @@ export default class orderThunk {
       registerAccessToken(getState().user.tokens.access);
       
       const [res, data] = await api.cart.get.userCartItems(query);
-      console.log("This is get all",res);
       if (res.status === 200) {
         dispatch(setCartItems(data));
       }

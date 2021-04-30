@@ -10,14 +10,14 @@ const BASE_URL_LOCAL = "http://localhost:8000/api";
 const FILE_URL_HEROKU = "https://ozarro-back-end.herokuapp.com/file/";
 const FILE_URL_LOCAL = "http://localhost:8000/file/";
 
-const DEFAULT_BASE_URL = BASE_URL_HEROKU;
+const DEFAULT_BASE_URL = BASE_URL_LOCAL;
 const DEFAULT_FILE_URL = FILE_URL_HEROKU;
 
 export const BACK_END_URL = {
   DEFAULT_BASE_URL, DEFAULT_FILE_URL
 };
 
-axios.defaults.baseURL = BASE_URL_HEROKU;
+axios.defaults.baseURL = DEFAULT_BASE_URL;
 
 /**
  * Register Access token with axios
@@ -25,7 +25,6 @@ axios.defaults.baseURL = BASE_URL_HEROKU;
  */
 export const registerAccessToken = (token) => {
   axios.defaults.headers["authorization"] = `Bearer ${token}`;
-  console.log("default header", axios.defaults.headers);
 };
 
 /**
@@ -35,7 +34,6 @@ export const registerAccessToken = (token) => {
  * @param res
  */
 function readStatus(res) {
-  console.log("read status res", res);
   if (!res || !res.status) {
     return {
       status: 408,
@@ -164,7 +162,7 @@ export default {
     },
     delete: {
       async deleteCartItem(itemId) {
-        return ajaxResolver(axios.delete(`/order/cart-item/${itemId}`));
+        return ajaxResolver(axios.delete(`/order/remove-cart-item/${itemId}`));
       },
     },
   },

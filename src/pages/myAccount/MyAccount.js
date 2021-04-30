@@ -51,9 +51,7 @@ function MyAccount({ options }) {
         const res = await dispatch(thunks.user.userLogin(data.email, data.password));
         dispatch(actions.ui.setPreloadShow(false));
         if(res.status === 200){
-            console.log("login response",res);
-            toast.success(res.message); 
-            console.log("Access Token", accessToken);
+            toast.success(res.message);
             localStorage.setItem("ozarro-user-access-token",  accessToken );
             localStorage.setItem("ozarro-user-refresh-token",  refreshToken );
 
@@ -77,7 +75,6 @@ function MyAccount({ options }) {
         if(res.status === 200){
             toast.success(res.data.message); 
         }else{
-            console.log(res);
             toast.error((res[0]) ? res[0].message : res.message); 
         }
 

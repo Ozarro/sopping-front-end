@@ -12,7 +12,7 @@ import NoscriptSnippet from "../../components/global/NoscriptSnippet";
 import {useDispatch, useSelector} from "react-redux";
 import {selectAllCartItems, selectZoneCities,
     selectAllCoupons} from "../../store/order/select";
-import {thunks, actions} from "../../store";
+import {thunks, actions, cleanQuery} from "../../store";
 import {toast} from "react-toastify";
 import order from '../../store/order';
 
@@ -41,8 +41,10 @@ function Checkout({ options }) {
     const [coupon, setCouponData] = useState({});
     const [orderData, setOrderData] = useState({deliveryCharge : 0});
     const [couponCode, setCouponCode] = useState("");
-    const [subTotal , setSubTotal] = useState();
+    const [subTotal , setSubTotal] = useState(0);
     const [grandTotal , setGrandTotal] = useState(0);
+    const [paymentMethods, setPaymentMethods] = useState(["Cash on Delivery", "Paypal"]);
+    const [btnDisabled, setBtnDisabled] = useState(true);
 
 
     useEffect( async () => {
@@ -54,15 +56,36 @@ function Checkout({ options }) {
         if (res1.status  != 200 | res2.status != 200 | res3.status != 200) {
             toast.error(res1.message);
         }
+
+
+    } ,[])
+
+    useEffect( () => {
         let subTotal = 0;
         cartItems.map((item) => {
             subTotal += parseFloat(item.cartItemPrice)*item.quantity
         })
         setSubTotal(subTotal);
+        calculateGrandTotal();
+    }, [cartItems, subTotal])
 
-    } ,[])
+
 
     useEffect(  () => {
+        calculateGrandTotal();
+    } ,[orderData, coupon])
+
+
+    const calculateGrandTotal = () =>{
+        if(orderData.city){
+            const data = zoneCities.filter((item) => item.city == orderData.city)
+            console.log(data);
+            if(Object.keys(data[0]) != 0){
+                orderData.deliveryCharge = parseFloat(data[0].deliveryCharge);
+            }
+
+        }
+        console.log(orderData);
         let couponAmount = 0
         let grandTotal = 0
         if(Object.keys(coupon) != 0){
@@ -71,11 +94,9 @@ function Checkout({ options }) {
         const deliveryCharge = (orderData.deliveryCharge) ? parseFloat(orderData.deliveryCharge)  : 0;
         grandTotal = subTotal +deliveryCharge -couponAmount
         setGrandTotal(grandTotal);
+    }
 
 
-    } ,[])
-
-    
     
     /**
      * Handle state
@@ -103,6 +124,7 @@ function Checkout({ options }) {
         setOrderData(data);
     };
 
+
     const handleCouponDataChange = ({ currentTarget: input }) => {
         const { name, value } = input;
         setCouponCode(value);
@@ -111,17 +133,22 @@ function Checkout({ options }) {
     const handleOrderPlaceSubmit = async (e) => {
         e.preventDefault();
         dispatch(actions.ui.setPreloadShow(true));
+        if(Object.keys(coupon) != 0){
+            orderData.couponCode = coupon.couponCode;
+            orderData.couponAmount = coupon.amount;
+        }
         const data = cleanQuery(orderData, 
             ["couponCode","couponAmount", "paymentMethod", "grandTotal", "street1", "street2"
             , "city", "mobile", "deliveryCharge", "cartItems"
         ])
-
         let cartItemList = [];
         cartItems.map((item) => {
             cartItemList.push(item.itemId)
         })
 
-        const res = await dispatch(thunks.order.addOrder({...data, cartItems : cartItemList}));
+        const order = {...data,cartItems : JSON.stringify(cartItemList), grandTotal }
+        console.log(order);
+        const res = await dispatch(thunks.order.addOrder(order));
         dispatch(actions.ui.setPreloadShow(false));
         if(res.status === 200){
             console.log("Order Place response",res);
@@ -135,18 +162,16 @@ function Checkout({ options }) {
 
     const handleCouponApplySubmit = (e) => {
         e.preventDefault();
-        const couponD = coupons.filter(item => {
+        const couponL = coupons.filter(item => {
             return(item.couponCode == couponCode && item.status == "Available" &&
                 new Date(item.expiryDate) > new Date()
             )})
-
-        if(couponD && Object.keys(couponD[0]) != 0){
-            if(coupon.amount >= subTotal){
+        if(couponL[0] && Object.keys(couponL[0]) != 0){
+            if(couponL[0].amount >= subTotal){
                 toast.error("You can not apply this coupon on this items");
                 return;
             }
-            setCouponData(couponD[0])
-            console.log(couponD);
+            setCouponData(couponL[0])
             toast.success("Coupon Code is valid")
         }else{
             toast.error("Coupon code is invalid")
@@ -171,7 +196,7 @@ function Checkout({ options }) {
                                 {
                                     showShowCoupon
                                         ?
-                                        <form className="checkout_coupon" method="post">
+                                        <form className="checkout_coupon">
                                             <p className="form-row form-row-first">
                                                 <input type="text" name="couponCode" className="input-text"
                                                        placeholder="Coupon code" id="couponCode"
@@ -197,7 +222,8 @@ function Checkout({ options }) {
                                             orderData={orderData}
                                             zoneCities={zoneCities}
                                             handleOrderDataChange={handleOrderDataChange}
-
+                                            paymentMethods={paymentMethods}
+                                            handleOrderPlaceSubmit={handleOrderPlaceSubmit}
                                         />
                                         {/*<ShippingFields/>*/}
                                     </div>
@@ -256,40 +282,38 @@ function Checkout({ options }) {
                                         </table>
                                         <div id="payment" className="woocommerce-checkout-payment">
                                             <ul className="wc_payment_methods payment_methods methods">
-                                                <li className="wc_payment_method payment_method_cheque">
-                                                    <input id="payment_method_cheque" type="radio"
-                                                           className="input-radio" name="payment_method"
-                                                           defaultValue="cheque" defaultChecked="checked"
-                                                           data-order_button_text/>
-                                                    {/*grop add span for radio button style*/}
-                                                    <span className="grop-woo-radio-style"/>
-                                                    {/*custom change*/}
-                                                    <label htmlFor="payment_method_cheque">
-                                                        Check Payments </label>
-                                                    <div className="payment_box payment_method_cheque">
-                                                        <p>Please send a check to Store Name, Store Street, Store Town,
-                                                            Store State / County, Store Postcode.</p>
-                                                    </div>
-                                                </li>
+                                                {/*<li className="wc_payment_method payment_method_cheque">*/}
+                                                {/*    <input id="payment_method_cheque" type="radio"*/}
+                                                {/*           className="input-radio" name="payment_method"*/}
+                                                {/*           defaultValue="cheque" defaultChecked="checked"*/}
+                                                {/*           data-order_button_text/>*/}
+                                                {/*    /!*grop add span for radio button style*!/*/}
+                                                {/*    <span className="grop-woo-radio-style"/>*/}
+                                                {/*    /!*custom change*!/*/}
+                                                {/*    <label htmlFor="payment_method_cheque">*/}
+                                                {/*        Check Payments </label>*/}
+                                                {/*    <div className="payment_box payment_method_cheque">*/}
+                                                {/*        <p>Please send a check to Store Name, Store Street, Store Town,*/}
+                                                {/*            Store State / County, Store Postcode.</p>*/}
+                                                {/*    </div>*/}
+                                                {/*</li>*/}
                                                 <li className="wc_payment_method payment_method_paypal">
-                                                    <input id="payment_method_paypal" type="radio"
-                                                           className="input-radio" name="payment_method"
-                                                           defaultValue="paypal"
-                                                           data-order_button_text="Proceed to PayPal"/>
-                                                    {/*grop add span for radio button style*/}
-                                                    <span className="grop-woo-radio-style"/>
+                                                    {/*<input id="payment_method_paypal" type="radio"*/}
+                                                    {/*       className="input-radio" name="payment_method"*/}
+                                                    {/*       defaultValue=""*/}
+                                                    {/*       data-order_button_text="Proceed to PayPal"/>*/}
+                                                    {/*/!*grop add span for radio button style*!/*/}
+                                                    {/*<span className="grop-woo-radio-style"/>*/}
                                                     {/*custom change*/}
-                                                    <label htmlFor="payment_method_paypal">
-                                                        PayPal <img src={process.env.PUBLIC_URL + "/assets/images/paypal.png"}
-                                                                    alt="PayPal Acceptance Mark"/><a href="#"
-                                                                                                     className="about_paypal"
-                                                                                                     title="What is PayPal?">What
-                                                        is PayPal?</a> </label>
-                                                    <div className="payment_box payment_method_paypal"
-                                                         style={{display: 'none'}}>
-                                                        <p>Pay via PayPal; you can pay with your credit card if you
-                                                            don’t have a PayPal account.</p>
-                                                    </div>
+                                                    {/*<label htmlFor="payment_method_paypal">*/}
+                                                    {/*    PayPal <img src={process.env.PUBLIC_URL + "/assets/images/paypal.png"}*/}
+                                                    {/*                alt="PayPal Acceptance Mark"/>*/}
+                                                    {/*</label>*/}
+                                                    {/*<div className="payment_box payment_method_paypal"*/}
+                                                    {/*     style={{display: 'none'}}>*/}
+                                                    {/*    <p>Pay via PayPal; you can pay with your credit card if you*/}
+                                                    {/*        don’t have a PayPal account.</p>*/}
+                                                    {/*</div>*/}
                                                 </li>
                                             </ul>
                                             <div className="form-row place-order">
@@ -298,11 +322,16 @@ function Checkout({ options }) {
 
                                                 <input type="submit" className="button alt"
                                                        name="woocommerce_checkout_place_order" id="place_order"
-                                                       defaultValue="Place order" data-value="Place order"/>
-                                                <input type="hidden" id="_wpnonce5" name="_wpnonce"
-                                                       defaultValue="783c1934b0"/>
-                                                <input type="hidden" name="_wp_http_referer"
-                                                       defaultValue="/wp/?page_id=6"/></div>
+                                                       defaultValue="Place order" data-value="Place order"
+                                                       onClick={handleOrderPlaceSubmit}
+
+                                                />
+
+                                                {/*<input type="hidden" id="_wpnonce5" name="_wpnonce"*/}
+                                                {/*       defaultValue="783c1934b0"/>*/}
+                                                {/*<input type="hidden" name="_wp_http_referer"*/}
+                                                {/*       defaultValue="/wp/?page_id=6"/>*/}
+                                            </div>
                                         </div>
                                     </div>
                                 </form>

@@ -82,6 +82,10 @@ function ShopSliderImages({options}) {
      */
     const handleAddToCart = async (e) => {
         e.preventDefault();
+        if(product.stock < productCount){
+            toast.error("Quantity is higher than the stock");
+            return;
+        }
         const itemData = {
             pCode : product.pCode,
             quantity : productCount,
@@ -92,12 +96,14 @@ function ShopSliderImages({options}) {
             return;
         }
         dispatch(actions.ui.setPreloadShow(true));
-        const res = await dispatch(thunks.order.addCartItem());
+        const res = await dispatch(thunks.order.addCartItem(itemData));
         dispatch(actions.ui.setPreloadShow(false));
         if (res.status  != 200) {
             setError(true);
             toast.error(res.message);
+            return;
         }
+        toast.success("Item added to cart successfully");
     }
 
     /**
@@ -183,7 +189,8 @@ function ShopSliderImages({options}) {
                                     <span className="current">Rs.  {(product) ? product.price : ""}</span>
                                 </div>
 
-                                <p>{(product) ? product.description : ""}</p>
+                                <p >{(product) ? product.description : ""}</p>
+                                <p className="h5">{(product) ? product.stock : ""} in Stock</p>
                                 <div className="product-option">
                                     <form className="form">
                                         <div className="product-row">

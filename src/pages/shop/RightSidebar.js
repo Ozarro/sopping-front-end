@@ -55,9 +55,7 @@ function RightSidebar({ options }) {
 
     const getFilterProducts = (category) => {
         let filterProducts = [];
-        console.log("category", category);
         if(Object.keys(category) != 0){
-            console.log("Inside filter", category);
             const categoryId = category.categoryId;
             filterProducts = products.filter(item => 
                 item.categoryId == categoryId

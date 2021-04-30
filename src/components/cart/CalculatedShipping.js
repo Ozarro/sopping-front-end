@@ -45,19 +45,11 @@ function CalculatedShipping({currencySymbol, price , zoneCities}) {
                         <th>Subtotal</th>
                         <td data-title="Subtotal">
                             <span className="woocommerce-Price-amount amount">
-                                    <span className="woocommerce-Price-currencySymbol">
-                                        {currencySymbol}
-                                    </span>{price}
+                                   {`Rs. ${price}`}
                             </span>
                         </td>
                     </tr>
-                    {/* <tr className="order-total">
-                        <th>Total</th>
-                        <td data-title="Total"><strong><span
-                            className="woocommerce-Price-amount amount"><span
-                            className="woocommerce-Price-currencySymbol">{currencySymbol}</span>{price}</span></strong>
-                        </td>
-                    </tr> */}
+
                     </tbody>
                 </table>
                 <div className="wc-proceed-to-checkout">

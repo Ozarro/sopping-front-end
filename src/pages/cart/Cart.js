@@ -59,7 +59,6 @@ function Cart({ options }) {
         if (res1.status  != 200 ) {
             toast.error(res1.message);
         }
-        toast.success(res1.message)
     }
 
     return (
@@ -89,7 +88,9 @@ function Cart({ options }) {
                                         <tbody>
                                         {
                                             cartItems.map((item, index) => (
-                                                <CartItem key={index} data={item}/>
+                                                <CartItem key={index} data={item}
+                                                     removeCartItem={removeCartItem}
+                                                />
                                             ))
                                         }
                                         
