@@ -1,9 +1,10 @@
-import React, { useDebugValue, useEffect } from 'react';
+import React, { useDebugValue, useEffect, useRef } from 'react';
 import {useState, Fragment} from 'react';
 import Footer from '../../components/global/Footer';
 import Instagram from '../../components/global/Instagram';
 import Header from '../../components/header/Header';
 import PageTitle from '../../components/global/PageTitle';
+import Paypal from "./Paypal";
 
 import BillingFields from './BillingFields';
 import ShippingFields from './ShippingFields';
@@ -39,14 +40,23 @@ function Checkout({ options }) {
     const [showLogin, setShowLogin] = useState(false);
     const [showShowCoupon, setShowShowCoupon] = useState(false);
     const [coupon, setCouponData] = useState({});
-    const [orderData, setOrderData] = useState({deliveryCharge : 0});
+    const [orderData, setOrderData] = useState({
+        paymentMethod : "",
+        mobile : "",
+        city : "",
+        street1 : "",
+        street2 : "",
+        deliveryCharge : 0});
     const [couponCode, setCouponCode] = useState("");
     const [subTotal , setSubTotal] = useState(0);
     const [grandTotal , setGrandTotal] = useState(0);
     const [paymentMethods, setPaymentMethods] = useState(["Cash on Delivery", "Paypal"]);
     const [btnDisabled, setBtnDisabled] = useState(true);
+    const [checkout, setCheckout] = useState(false)
 
-
+    /**
+     * Use Effects
+     */
     useEffect( async () => {
         dispatch(actions.ui.setPreloadShow(true));
         const res1 = await dispatch(thunks.order.getAllCartItems());
@@ -57,9 +67,9 @@ function Checkout({ options }) {
             toast.error(res1.message);
         }
 
-
     } ,[])
 
+    // Calculate grand total and subtoatal
     useEffect( () => {
         let subTotal = 0;
         cartItems.map((item) => {
@@ -74,6 +84,20 @@ function Checkout({ options }) {
     useEffect(  () => {
         calculateGrandTotal();
     } ,[orderData, coupon])
+
+
+    useEffect(  () => {
+        if(orderData.paymentMethods == "" | orderData.mobile == ""
+            | orderData.city == "" | orderData.street1 == "" |
+            orderData.street2 == "" | orderData.deliveryCharge == 0){
+            console.log("insfsdfsd",orderData, btnDisabled);
+            setBtnDisabled(true);
+            setCheckout(false);
+        }else{
+            setBtnDisabled(false);
+        }
+    } ,[orderData]);
+
 
 
     const calculateGrandTotal = () =>{
@@ -101,6 +125,10 @@ function Checkout({ options }) {
     /**
      * Handle state
      */
+
+    const handlePaypalChange = (e) => {
+        setCheckout(true);
+    }
 
     const HandelShowCouponStatus = (e) => {
         e.preventDefault();
@@ -130,8 +158,7 @@ function Checkout({ options }) {
         setCouponCode(value);
     };
 
-    const handleOrderPlaceSubmit = async (e) => {
-        e.preventDefault();
+    const handleOrderPlaceSubmit = async () => {
         dispatch(actions.ui.setPreloadShow(true));
         if(Object.keys(coupon) != 0){
             orderData.couponCode = coupon.couponCode;
@@ -178,6 +205,7 @@ function Checkout({ options }) {
         }
     }
 
+    console.log(orderData, btnDisabled);
     return (
         <Fragment>
             <Header options={options} />
@@ -281,56 +309,44 @@ function Checkout({ options }) {
                                             </tfoot>
                                         </table>
                                         <div id="payment" className="woocommerce-checkout-payment">
-                                            <ul className="wc_payment_methods payment_methods methods">
-                                                {/*<li className="wc_payment_method payment_method_cheque">*/}
-                                                {/*    <input id="payment_method_cheque" type="radio"*/}
-                                                {/*           className="input-radio" name="payment_method"*/}
-                                                {/*           defaultValue="cheque" defaultChecked="checked"*/}
-                                                {/*           data-order_button_text/>*/}
-                                                {/*    /!*grop add span for radio button style*!/*/}
-                                                {/*    <span className="grop-woo-radio-style"/>*/}
-                                                {/*    /!*custom change*!/*/}
-                                                {/*    <label htmlFor="payment_method_cheque">*/}
-                                                {/*        Check Payments </label>*/}
-                                                {/*    <div className="payment_box payment_method_cheque">*/}
-                                                {/*        <p>Please send a check to Store Name, Store Street, Store Town,*/}
-                                                {/*            Store State / County, Store Postcode.</p>*/}
-                                                {/*    </div>*/}
-                                                {/*</li>*/}
-                                                <li className="wc_payment_method payment_method_paypal">
-                                                    {/*<input id="payment_method_paypal" type="radio"*/}
-                                                    {/*       className="input-radio" name="payment_method"*/}
-                                                    {/*       defaultValue=""*/}
-                                                    {/*       data-order_button_text="Proceed to PayPal"/>*/}
-                                                    {/*/!*grop add span for radio button style*!/*/}
-                                                    {/*<span className="grop-woo-radio-style"/>*/}
-                                                    {/*custom change*/}
-                                                    {/*<label htmlFor="payment_method_paypal">*/}
-                                                    {/*    PayPal <img src={process.env.PUBLIC_URL + "/assets/images/paypal.png"}*/}
-                                                    {/*                alt="PayPal Acceptance Mark"/>*/}
-                                                    {/*</label>*/}
-                                                    {/*<div className="payment_box payment_method_paypal"*/}
-                                                    {/*     style={{display: 'none'}}>*/}
-                                                    {/*    <p>Pay via PayPal; you can pay with your credit card if you*/}
-                                                    {/*        don’t have a PayPal account.</p>*/}
-                                                    {/*</div>*/}
-                                                </li>
-                                            </ul>
+
+
                                             <div className="form-row place-order">
 
-                                                <NoscriptSnippet/>
+                                                {(orderData.paymentMethod == "Paypal") ?
+                                                    [ (checkout) ?
+                                                        <Paypal grandTotal={grandTotal}
+                                                                handleOrderPlaceSubmit={handleOrderPlaceSubmit} />
 
-                                                <input type="submit" className="button alt"
-                                                       name="woocommerce_checkout_place_order" id="place_order"
-                                                       defaultValue="Place order" data-value="Place order"
-                                                       onClick={handleOrderPlaceSubmit}
+                                                        :
+                                                        <div>
+                                                            <label htmlFor="payment_method_paypal">
+                                                                PayPal <img src={process.env.PUBLIC_URL + "/assets/images/paypal.png"}
+                                                                            alt="PayPal Acceptance Mark"/>
+                                                            </label>
+                                                            <input type="submit" className="button alt btn-lg"
+                                                                   name="woocommerce_checkout_place_order" id="place_order"
+                                                                   defaultValue="Place order" data-value="Place order"
+                                                                   disabled={btnDisabled}
+                                                                   onClick={handlePaypalChange}
 
-                                                />
+                                                            />
+                                                        </div>
 
-                                                {/*<input type="hidden" id="_wpnonce5" name="_wpnonce"*/}
-                                                {/*       defaultValue="783c1934b0"/>*/}
-                                                {/*<input type="hidden" name="_wp_http_referer"*/}
-                                                {/*       defaultValue="/wp/?page_id=6"/>*/}
+                                                    ]
+
+                                                    :
+                                                    <input type="submit" className="button alt btn-lg"
+                                                           name="woocommerce_checkout_place_order" id="place_order"
+                                                           defaultValue="Place order" data-value="Place order"
+                                                           onClick={handleOrderPlaceSubmit}
+                                                           disabled={btnDisabled}
+
+                                                    />
+
+                                                }
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -347,6 +363,10 @@ function Checkout({ options }) {
 
         </Fragment>
     );
+
+
+
+
 }
 
 export default Checkout;

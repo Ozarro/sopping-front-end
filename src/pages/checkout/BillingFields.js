@@ -35,7 +35,7 @@ function BillingFields({orderData, zoneCities, handleOrderDataChange,
                                                                     title="required">*</abbr></label>
                         <select name="paymentMethod" id="paymentMethod" autoComplete="payment method"
                                 className="country_to_state country_select "
-                                onChange={handleOrderDataChange}
+                                onChange={handleOrderDataChange} required
                         >
                             <option>Select a payment method</option>
                             {
@@ -53,7 +53,7 @@ function BillingFields({orderData, zoneCities, handleOrderDataChange,
                         <input type="tel" className="input-text " name="mobile" id="mobile" placeholder="Enter Mobile"
                                autoComplete="tel"
                                value={orderData.mobile}
-                                onChange={handleOrderDataChange}
+                                onChange={handleOrderDataChange} required
                         />
                     </p>
 
@@ -64,7 +64,7 @@ function BillingFields({orderData, zoneCities, handleOrderDataChange,
                                                                        title="required">*</abbr></label>
                         <select name="city" id="city" autoComplete="country"
                                 className="country_to_state country_select "
-                                onChange={handleOrderDataChange}
+                                onChange={handleOrderDataChange} required
                         >
                             <option>Select a city</option>
                             {
@@ -81,7 +81,7 @@ function BillingFields({orderData, zoneCities, handleOrderDataChange,
                         <input type="text" className="input-text " name="street1" id="street1"
                                placeholder="Street address 1" autoComplete="address-line1"
                                value={orderData.street1}
-                               onChange={handleOrderDataChange}
+                               onChange={handleOrderDataChange} required
 
                         />
                     </p>

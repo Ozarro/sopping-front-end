@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import api from "../../api/index";
 
 import {useDispatch, useSelector} from "react-redux";
-import {getAccessToken, getRefreshToken} from "../../store/user/select";
+import {getAccessToken, getRefreshToken, getUserData} from "../../store/user/select";
 import {thunks, actions, cleanQuery} from "../../store";
 import { useHistory } from 'react-router';
 
@@ -25,14 +25,23 @@ function MyAccount({ options }) {
     let history = useHistory();
     const dispatch = useDispatch();
 
+
     /**
      * Selectors
      */
+    const userData = useSelector(getUserData);
     const accessToken = useSelector(getAccessToken); 
     const refreshToken = useSelector(getRefreshToken); 
 
-    const [loginData, setLogInData] = useState({});
-    const [registerData, setRegisterData] = useState({});
+    const [loginData, setLogInData] = useState({
+        email : "",
+        password : ""
+    });
+    const [registerData, setRegisterData] = useState({
+        name : "",
+        email : "",
+        password : ""
+    });
     const [errors, setErrors] = useState({});
     const [btnDisable, setBtnDisable] = useState({});
 
@@ -45,17 +54,22 @@ function MyAccount({ options }) {
 
     const handleLogInSubmit = async (e) => {
         e.preventDefault();
+        if(loginData.email == "" |  loginData.password == ""){
+            toast.error("Please fill the required fields and submit");
+            return;
+        }
         dispatch(actions.ui.setPreloadShow(true));
         const data = cleanQuery(loginData, ["email", "password"])
         console.log("data", data);
         const res = await dispatch(thunks.user.userLogin(data.email, data.password));
+        console.log("user login res", res);
         dispatch(actions.ui.setPreloadShow(false));
         if(res.status === 200){
             toast.success(res.message);
-            localStorage.setItem("ozarro-user-access-token",  accessToken );
-            localStorage.setItem("ozarro-user-refresh-token",  refreshToken );
+            localStorage.setItem("ozarro-user-access-token", (res.token) ? res.token.access : accessToken );
+            localStorage.setItem("ozarro-user-refresh-token", (res.token) ? res.token.refresh : refreshToken );
 
-            history.push('/home');
+            // history.push('/home');
         }else{
             toast.error(res.message);
         }
@@ -64,6 +78,10 @@ function MyAccount({ options }) {
 
     const handleRegisterSubmit = async (e) => {
         e.preventDefault();
+        if(registerData.email == "" | registerData.name == "" | registerData.password == ""){
+            toast.error("Please fill the required fields and submit");
+            return;
+        }
         if(registerData.password != registerData.confirmPassword){
             toast.error("Confirm password doesn't match with password");
             return;
