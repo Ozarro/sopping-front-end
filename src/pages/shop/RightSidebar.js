@@ -131,7 +131,7 @@ function RightSidebar({ options }) {
 
             <Header options={options} />
 
-            <PageTitle name="Shop Right Sidebar"/>
+            <PageTitle name="Shop"/>
 
 
             {/* start shop-section */}
