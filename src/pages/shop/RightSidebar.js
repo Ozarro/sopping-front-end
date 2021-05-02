@@ -74,7 +74,6 @@ function RightSidebar({ options }) {
         if (res1.status  != 200 || res2.status != 200) {
             setError(true);
             toast.error(res1.message);
-            toast.error(res2.message);
         }
     }, []);
 
