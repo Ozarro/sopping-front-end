@@ -43,7 +43,7 @@ function ContactUs({ options }) {
         if(res.status === 200){
             toast.success(res.data.message);
         }else{
-            toast.error((res[0]) ? res[0].message : res.message);
+            toast.success((res[0]) ? res[0].message : res.message);
         }
 
     }

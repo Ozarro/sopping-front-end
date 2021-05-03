@@ -8,7 +8,7 @@ import categories from "../../data/categories.json";
  * @constructor
  */
 function BillingFields({orderData, zoneCities, handleOrderDataChange,
-                           handleOrderPlaceSubmit, paymentMethods,}) {
+                            paymentMethods,}) {
 
     return (
         <Fragment>

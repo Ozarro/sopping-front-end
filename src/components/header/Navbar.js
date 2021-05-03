@@ -21,7 +21,8 @@ function Navbar({options}) {
                     </li>
 
                     <li className="menu-item-has-children has-mega-menu">
-                        <a href="/shop-right-sidebar">Shop</a>
+                        {/* <a href="/shop-right-sidebar">Shop</a> */}
+                        <li><NavLink to="/shop-right-sidebar" activeClassName="current-menu-item">Shop</NavLink></li>
                     </li>
 
                     <Logo/>

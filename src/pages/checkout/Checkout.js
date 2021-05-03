@@ -187,6 +187,36 @@ function Checkout({ options }) {
 
     }
 
+    const handleOrderPlaceSubmitCOD = async (e) => {
+        e.preventDefault();
+        dispatch(actions.ui.setPreloadShow(true));
+        if(Object.keys(coupon) != 0){
+            orderData.couponCode = coupon.couponCode;
+            orderData.couponAmount = coupon.amount;
+        }
+        const data = cleanQuery(orderData, 
+            ["couponCode","couponAmount", "paymentMethod", "grandTotal", "street1", "street2"
+            , "city", "mobile", "deliveryCharge", "cartItems"
+        ])
+        let cartItemList = [];
+        cartItems.map((item) => {
+            cartItemList.push(item.itemId)
+        })
+
+        const order = {...data,cartItems : JSON.stringify(cartItemList), grandTotal }
+        console.log(order);
+        const res = await dispatch(thunks.order.addOrder(order));
+        dispatch(actions.ui.setPreloadShow(false));
+        if(res.status === 200){
+            console.log("Order Place response",res);
+            toast.success(res.message); 
+        }else{
+            console.log(res);
+            toast.error((res[0]) ? res[0].message : res.message); 
+        }
+
+    }
+
     const handleCouponApplySubmit = (e) => {
         e.preventDefault();
         const couponL = coupons.filter(item => {
@@ -243,8 +273,8 @@ function Checkout({ options }) {
                                         : ''
                                 }
 
-                                <form name="checkout" method="post" className="checkout woocommerce-checkout"
-                                      action="/?page_id=6" encType="multipart/form-data">
+                                <form name="checkout" className="checkout woocommerce-checkout" method="post">
+
                                     <div className="col2-set" id="customer_details">
                                         <BillingFields
                                             orderData={orderData}
@@ -339,7 +369,7 @@ function Checkout({ options }) {
                                                     <input type="submit" className="button alt btn-lg"
                                                            name="woocommerce_checkout_place_order" id="place_order"
                                                            defaultValue="Place order" data-value="Place order"
-                                                           onClick={handleOrderPlaceSubmit}
+                                                           onClick={handleOrderPlaceSubmitCOD}
                                                            disabled={btnDisabled}
 
                                                     />
