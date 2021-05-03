@@ -40,7 +40,6 @@ function RecentProducts({onQuickViewClick}) {
         const res1 = await dispatch(thunks.product.getAllProducts());
         dispatch(actions.ui.setPreloadShow(false));
         if (res1.status  != 200) {
-            setError(true);
             toast.error(res1.message);
         }
     }, []);

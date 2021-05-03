@@ -72,7 +72,6 @@ function RightSidebar({ options }) {
         const res2 = await dispatch(thunks.product.getAllCategory());
         dispatch(actions.ui.setPreloadShow(false));
         if (res1.status  != 200 || res2.status != 200) {
-            setError(true);
             toast.error(res1.message);
         }
     }, []);
