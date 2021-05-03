@@ -191,6 +191,7 @@ function ShopSliderImages({options}) {
 
                                 <p >{(product) ? product.description : ""}</p>
                                 <p className="h5">{(product) ? product.stock : ""} in Stock</p>
+                                <p className="h5">Size : {(product) ? product.size : ""}</p>
                                 <div className="product-option">
                                     <form className="form">
                                         <div className="product-row">

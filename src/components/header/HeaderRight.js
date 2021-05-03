@@ -68,9 +68,7 @@ function HeaderRight({options}) {
                     </button>
                     <div className={"mini-cart-content " + (options.miniUser ? 'mini-cart-content-toggle' : '')}>
                         <div className="mini-cart-items">
-                            {
-                                cartItems.map((item, index) => (
-                                    <div key={index} className="mini-cart-item clearfix">
+                        <div className="mini-cart-item clearfix">
                                         {/*<div className="mini-cart-item-image">*/}
                                         {/*    <img src={FILE_URL + item.image} alt=""/>*/}
                                         {/*</div>*/}
@@ -80,8 +78,6 @@ function HeaderRight({options}) {
 
                                         </div>
                                     </div>
-                                ))
-                            }
                         </div>
                         <div className="mini-cart-action clearfix">
                             <Link className="view-cart-btn" to="/my-account">

@@ -3,10 +3,7 @@ import axios from "axios";
 /**
  * Setup Axios
  */
-// const BASE_URL_HEROKU = "https://ozarro-back-end.herokuapp.com/api";
-// const BASE_URL_LOCAL = "http://localhost:8000/api";
-// const FILE_URL_HEROKU = "https://ozarro-back-end.herokuapp.com/file/";
-// const FILE_URL_LOCAL = "http://localhost:8000/file/";
+
 
 const BASE_URL_HEROKU = process.env.REACT_APP_BASE_URL_HEROKU;
 const BASE_URL_LOCAL = process.env.REACT_APP_BASE_URL_LOCAL;
