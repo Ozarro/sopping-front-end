@@ -144,7 +144,10 @@ function RecentProducts({onQuickViewClick}) {
                                                     </div>
                                                     <div className="product-info">
                                                         <h4>
-                                                            <Link to="/single-slider-images">
+                                                            <Link to={{
+                                                                pathname : `/single-slider-images`,
+                                                                pCode : item.pCode
+                                                            }} params = {{pCode : item.pCode}}>
                                                                 {item.pName}
                                                             </Link>
                                                         </h4>
