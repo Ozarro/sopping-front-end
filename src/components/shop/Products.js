@@ -32,26 +32,6 @@ function Products({HandelQuickViewData, products, ordering}) {
                                     }} params = {{pCode : item.pCode}}>
                                     <img loading="lazy" src={FILE_URL + item.image} alt="Product Image"/>
                                 </Link>
-                                <div className="shop-action-wrap">
-                                    <ul className="shop-action">
-                                        <li>
-                                            <a href="#" title="Quick view!"
-                                               data-tip="Quick view!"
-                                               onClick={
-                                                   e => HandelQuickViewData(e, item)
-                                               }
-                                            >
-                                                <i className="fi flaticon-view"/>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Add to cart!"
-                                               data-tip="Add to cart!">
-                                                <i className="fi flaticon-shopping-cart"/>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </div>
                             <div className="product-info">
                                 <h4>

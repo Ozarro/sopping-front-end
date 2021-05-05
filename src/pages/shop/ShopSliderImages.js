@@ -41,7 +41,8 @@ function ShopSliderImages({options}) {
 
     const [error, setError] = useState(false);
     const [product, setProduct] = useState({});
-    const [itemData, setItemData] = useState({})
+    const [itemData, setItemData] = useState({});
+    const sizes = ['XSM','S', 'M', 'L', 'XL' , 'XLL']
 
     const getProductByCode = (pCode , products) => {
         let product ;
@@ -192,8 +193,26 @@ function ShopSliderImages({options}) {
                                 <p >{(product) ? product.description : ""}</p>
                                 <p className="h5">{(product) ? product.stock : ""} in Stock</p>
                                 <p className="h5">Size : {(product) ? product.size : ""}</p>
+
+
                                 <div className="product-option">
                                     <form className="form">
+                                        <div className="product-row">
+                                            <div className="product-row">
+                                                <select name="selectSize" id ="selectSize"
+                                                        className="form-select"
+                                                        onChange={() => {}}
+                                                >
+                                                    <option >Size</option>
+                                                    {
+                                                        sizes.map((item, index) =>
+                                                            (<option className="h5" key = {index} value={item}>{item}</option> )
+                                                        )
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
                                         <div className="product-row">
                                             <div className="touchspin-wrap">
                                                 <button
@@ -212,6 +231,7 @@ function ShopSliderImages({options}) {
                                                 <input readOnly className="product-count" type="text"
                                                        value={productCount} name="product-count"/>
                                             </div>
+
                                             <div>
                                                 <button type="submit"
                                                 onClick={handleAddToCart} 
