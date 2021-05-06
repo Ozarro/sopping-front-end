@@ -26,11 +26,11 @@ function HeaderLeft({options}) {
                         <p>Covered the whole of her lower arm towards the viewer gregor then turned to look out
                             the window</p>
                         <ul className="info">
-                            <li>Contact us: ++8801682530219</li>
-                            <li>Mail us: eoard@gmail.com</li>
+                            <li>Contact us: +94774020122</li>
+                            <li>Mail us: Ozarroclothing@gmail.com</li>
                         </ul>
                         <ul className="social-links">
-                            <li><a href="#"><i className="ti-facebook"/></a></li>
+                            <li><a href="https://www.facebook.com/Ozarroclothing"><i className="ti-facebook"/></a></li>
                             <li><a href="#"><i className="ti-twitter-alt"/></a></li>
                             <li><a href="#"><i className="ti-pinterest"/></a></li>
                             <li><a href="#"><i className="ti-vimeo-alt"/></a></li>

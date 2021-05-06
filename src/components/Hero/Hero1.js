@@ -45,7 +45,7 @@ function Hero1() {
                                             <p>{item.text}</p>
                                         </div>
                                         <div className="slide-title">
-                                            <h2>{item.title}</h2>
+                                            <h2></h2>
                                         </div>
                                         <div className="clearfix"/>
                                         <div className="slide-btns">
