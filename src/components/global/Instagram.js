@@ -34,7 +34,7 @@ const instagramItems = [
         id:"6",
         img: "/assets/images/instagram/6.jpg",
         link: "#"
-    }
+    },
 ];
 
 /**

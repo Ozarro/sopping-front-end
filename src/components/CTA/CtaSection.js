@@ -18,10 +18,8 @@ function CtaSection() {
                             <div className="content-area">
                                 <span>Trending</span>
                                 <h3>New Fashion</h3>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores nisi distinctio
-                                    magni,
-                                    iure deserunt doloribus optio</p>
-                                    <Link className="theme-btn-s2" to="/shop-full-width">
+                                <p>Ozarro Clothing</p>
+                                    <Link className="theme-btn-s2" to="/shop-right-sidebar">
                                         Shop now
                                     </Link>
                             </div>

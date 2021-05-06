@@ -37,12 +37,12 @@ function HeaderLeft({options}) {
                         </ul>
                     </div>
                 </div>
-                <div className="search-area">
-                    <form>
-                        <button type="submit"><i className="fi flaticon-search"/></button>
-                        <input type="text" placeholder="Search for.."/>
-                    </form>
-                </div>
+                {/*<div className="search-area">*/}
+                {/*    <form>*/}
+                {/*        <button type="submit"><i className="fi flaticon-search"/></button>*/}
+                {/*        <input type="text" placeholder="Search for.."/>*/}
+                {/*    </form>*/}
+                {/*</div>*/}
             </div>
         </Fragment>
     );

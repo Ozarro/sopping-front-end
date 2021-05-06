@@ -25,7 +25,7 @@ function FeaturedProducts() {
                                             </div>
                                             <div className="details">
                                                 <h3>{item.title}</h3>
-                                                <Link className="shop-btn" to="/shop-full-width">
+                                                <Link className="shop-btn" to="/shop-right-sidebar">
                                                     Shop Now
                                                 </Link>
                                             </div>

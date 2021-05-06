@@ -5280,7 +5280,7 @@ button:active {
 #1.7	cta-section
 --------------------------------------------------------------*/
 .cta-section {
-    background: url("../images/cta.jpg") top center/cover no-repeat local;
+    background: url("../images/slider/slide-2.jpg") top center/cover no-repeat local;
     background-color: #000;
     padding: 150px 0;
 }
