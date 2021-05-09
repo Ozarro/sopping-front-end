@@ -84,7 +84,11 @@ function ShopSliderImages({options}) {
     const handleAddToCart = async (e) => {
         e.preventDefault();
         if(product.stock < productCount){
-            toast.error("Quantity is higher than the stock");
+            toast.error("Out of stock");
+            return;
+        }
+        if(product.status != "Available"){
+            toast.error("Product is currently not available");
             return;
         }
         const itemData = {
