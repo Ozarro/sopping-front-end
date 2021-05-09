@@ -62,11 +62,11 @@ function ContactUs({ options }) {
      * demo data
      */
     const contactUsData = {
-        address: "Ailded frame showed a lady fitted out with fur hat and fur boa who sat upright",
-        phone_1: "54875465-65741895-6547",
-        phone_2: "2222-3333-4444-555",
-        email_1: "Admin@mail.com",
-        email_2: "example@mail.com",
+        address: "No90,Narahenpita,Colombo08",
+        phone_1: "+94774020122",
+        
+        email_1: "Ozarroclothing@gmail.com",
+       
         time: "10AM - 5 PM, Sunday closed"
     };
 
