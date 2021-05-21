@@ -7,17 +7,17 @@ import InstagramItem from "./InstagramItem";
 const instagramItems = [
     {
         id:"1",
-        img: "/assets/images/instagram/1.jpg",
+        img: "/assets/images/instagram/1.PNG",
         link: "#"
     },
     {
         id:"2",
-        img: "/assets/images/instagram/2.jpg",
+        img: "/assets/images/instagram/2.PNG",
         link: "#"
     },
     {
         id:"3",
-        img: "/assets/images/instagram/3.jpg",
+        img: "/assets/images/instagram/3.PNG",
         link: "#"
     },
     {
@@ -54,7 +54,7 @@ function Instagram() {
                             <div className="instagram-inner">
                                 <div className="instagram-text">
                                     <h3>Follow our instagram</h3>
-                                    <p>@aviwp.studio</p>
+                                    <p>@ozarro_clothing</p>
                                 </div>
                                 <div className="instagram-grids clearfix">
                                     {
