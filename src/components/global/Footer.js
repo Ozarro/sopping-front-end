@@ -42,7 +42,7 @@ function Footer() {
                                     </div>
                                     <div className="social">
                                         <ul className="clearfix">
-                                            <li><a href="#" title="Facebook">fb</a></li>
+                                            <li><a href="https://www.facebook.com/Ozarroclothing" title="Facebook">fb</a></li>
                                             <li><a href="#" title="Twitter">tw</a></li>
                                             <li><a href="#" title="Instagram">ig</a></li>
                                             <li><a href="#" title="Pinterest">pr</a></li>

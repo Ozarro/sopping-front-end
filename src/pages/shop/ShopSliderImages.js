@@ -42,7 +42,7 @@ function ShopSliderImages({options}) {
     const [error, setError] = useState(false);
     const [product, setProduct] = useState({});
     const [itemData, setItemData] = useState({});
-    const sizes = ['XSM','S', 'M', 'L', 'XL' , 'XLL']
+    const sizes = ['UK8','UK10','UK12']
 
     const getProductByCode = (pCode , products) => {
         let product ;
@@ -91,6 +91,7 @@ function ShopSliderImages({options}) {
             toast.error("Product is currently not available");
             return;
         }
+    
         const itemData = {
             pCode : product.pCode,
             quantity : productCount,
