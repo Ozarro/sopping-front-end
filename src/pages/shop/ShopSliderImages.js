@@ -42,6 +42,7 @@ function ShopSliderImages({options}) {
     const [error, setError] = useState(false);
     const [product, setProduct] = useState({});
     const [itemData, setItemData] = useState({});
+    const [size, setSize] = useState('');
     const sizes = ['UK8','UK10','UK12']
 
     const getProductByCode = (pCode , products) => {
@@ -91,6 +92,11 @@ function ShopSliderImages({options}) {
             toast.error("Product is currently not available");
             return;
         }
+        if(size== '' | size == null){
+            toast.error("You must select a size");
+            return;
+        }
+
     
         const itemData = {
             pCode : product.pCode,
@@ -112,6 +118,9 @@ function ShopSliderImages({options}) {
         toast.success("Item added to cart successfully");
     }
 
+   const handleChange = (e) => {
+    setSize(e.target.value);  
+    }
     /**
      * Handle Product Count
      */
@@ -197,7 +206,7 @@ function ShopSliderImages({options}) {
 
                                 <p >{(product) ? product.description : ""}</p>
                                 <p className="h5">{(product) ? product.stock : ""} in Stock</p>
-                                <p className="h5">Size : {(product) ? product.size : ""}</p>
+                                {/* </div></div>p className="h5">Available Sizes : {(product) ? product.size : ""}</p> */}
 
 
                                 <div className="product-option">
@@ -206,7 +215,8 @@ function ShopSliderImages({options}) {
                                             <div className="product-row">
                                                 <select name="selectSize" id ="selectSize"
                                                         className="form-select"
-                                                        onChange={() => {}}
+                                                        required
+                                                        onChange={handleChange}
                                                 >
                                                     <option >Size</option>
                                                     {
