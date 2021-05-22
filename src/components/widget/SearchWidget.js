@@ -6,7 +6,7 @@ import React, {Fragment} from 'react';
  * @returns {*}
  * @constructor
  */
-function SearchWidget({title}) {
+function SearchWidget({title, handleSearch, handleSearchChange}) {
 
     return (
         <Fragment>
@@ -17,8 +17,8 @@ function SearchWidget({title}) {
 
                 <form>
                     <div>
-                        <input type="text" placeholder="Search Post.."/>
-                        <button type="submit"><i className="ti-search"/></button>
+                        <input type="text" placeholder="Search Product.." onChange={handleSearchChange}/>
+                        <button type="submit" onClick={handleSearch}><i className="ti-search"/></button>
                     </div>
                 </form>
             </div>

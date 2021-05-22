@@ -43,10 +43,9 @@ function RightSidebar({ options }) {
     const [showQuickView, setShowQuickView] = useState(false);
     const [quickViewData, setQuickViewData] = useState({});
     const [category, setCategory] = useState({});
-
     const [error, setError] = useState(false);
-
     const [ordering, setOrdering] = useState(1);
+    const [searchKeyword , setSearchKeyword] = useState('');
 
     const products = useSelector(getAllProducts);
     const categories = useSelector(getAllCategories);
@@ -77,11 +76,35 @@ function RightSidebar({ options }) {
     }, []);
 
 
-    
-
     useEffect(async () => {
         setFilterProducts(getFilterProducts(category));
     }, [category,products]);
+
+    /**
+     * Handle product search
+     */
+    const handleSearchChange = (e) => {
+        setSearchKeyword((e.target.value).toLowerCase());
+        if(searchKeyword == '' | searchKeyword == null){
+            setFilterProducts(products);
+            return;
+        };
+        const temp = products.filter(item => {
+            return item.pName.toLowerCase().includes((e.target.value).toLowerCase())
+        })
+        setFilterProducts(temp);
+    }
+    const handleSearch = (e, data) => {
+        e.preventDefault();
+        if(searchKeyword == '' | searchKeyword == null){
+            setFilterProducts(products);
+            return;
+        };
+        const temp = products.filter(item => {
+            return item.pName.toLowerCase().includes(searchKeyword)
+        })
+        setFilterProducts(temp);
+    }
 
     /**
      * Handle Ordering Status
@@ -100,14 +123,6 @@ function RightSidebar({ options }) {
         setQuickViewData(item);
     };
 
-    /**
-     * Handel Quick View Close
-     */
-    const HandelQuickViewClose = (e) => {
-        e.preventDefault();
-        setShowQuickView(false);
-        setQuickViewData({});
-    };
 
     /**
      * Handel Change of the Category
@@ -151,7 +166,10 @@ function RightSidebar({ options }) {
                                     {/*<Pagination extraClass=""/>*/}
                                 </div>
                                 <div className="shop-sidebar">
-                                    {/* <SearchWidget title=""/> */}
+                                     <SearchWidget title="Search product"
+                                        handleSearch={handleSearch}
+                                                   handleSearchChange={handleSearchChange}
+                                     />
                                     {/* <PriceFilterWidget/> */}
                                     <ProductCategoriesWidget
                                         categories={categories}

@@ -24,9 +24,10 @@ function Header({ options }) {
     const dispatch = useDispatch();
     const coupons = useSelector(selectAllCoupons);
     const [coupon, setCoupon] = useState();
+    const [fCoupons, setFCoupon] = useState([]);
 
     const randomCoupon = () => {
-        return coupons[Math.floor(Math.random() * coupons.length)];
+        return fCoupons[Math.floor(Math.random() * coupons.length)];
     }
 
 
@@ -37,7 +38,14 @@ function Header({ options }) {
         if (res1.status  != 200 ) {
             return;
         }
+        const temp = coupons.filter(item => item.amountType === 'Discount')
+        setFCoupon(temp);
     } ,[])
+
+    useEffect( () => {
+        const temp = coupons.filter(item => item.amountType === 'Discount')
+        setFCoupon(temp);
+    }, [coupons])
 
     useEffect( async () => {
         setCoupon(randomCoupon())
